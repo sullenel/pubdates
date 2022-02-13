@@ -14,12 +14,18 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
+  freezed_annotation: ^1.1.0
+  bloc: ^8.0.2
+  bloc_concurrency: ^0.2.0
+  flutter_bloc: ^8.0.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
   flutter_lints: ^1.0.0
+  freezed: ^1.1.1
+  build_runner:
 
 flutter:
   uses-material-design: true
