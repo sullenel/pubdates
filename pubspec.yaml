@@ -18,6 +18,15 @@ dependencies:
   bloc: ^8.0.2
   bloc_concurrency: ^0.2.0
   flutter_bloc: ^8.0.1
+  pubspec_lock: ^3.0.1
+  pubspec_parse: ^1.2.0
+  path: ^1.8.0
+
+  # Native
+  file_selector: ^0.8.3
+  file_selector_macos: ^0.0.4
+  file_selector_windows: ^0.8.2
+  file_selector_linux: ^0.0.2
 
 dev_dependencies:
   flutter_test:
@@ -25,7 +34,8 @@ dev_dependencies:
 
   flutter_lints: ^1.0.0
   freezed: ^1.1.1
-  build_runner:
+  json_serializable: ^6.1.4
+  build_runner: ^2.1.7
 
 flutter:
   uses-material-design: true

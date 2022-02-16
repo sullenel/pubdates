@@ -31,6 +31,8 @@
 .pub/
 /build/
 untranslated_messages.txt
+lib/**/*.freezed.dart
+lib/**/*.g.dart
 
 # Web related
 lib/generated_plugin_registrant.dart

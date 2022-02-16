@@ -24,7 +24,9 @@ class App extends StatelessWidget {
           AppLocalizations.of(context).appTitle,
       theme: ThemeData(),
       darkTheme: ThemeData.dark(),
-      onGenerateRoute: (RouteSettings routeSettings) {},
+      onGenerateRoute: (RouteSettings routeSettings) {
+        return MaterialPageRoute(builder: (_) => const Placeholder());
+      },
     );
   }
 }
