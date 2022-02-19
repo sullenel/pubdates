@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:bloc_concurrency/bloc_concurrency.dart' as transformers;
 import 'package:pubdates/features/project/bloc/project_event.dart';
 import 'package:pubdates/features/project/bloc/project_state.dart';
 import 'package:pubdates/features/project/repositories/project_repository.dart';
@@ -20,6 +21,7 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
       (event, emit) => event.map(
         select: (event) => _handleProjectSelected(event, emit),
       ),
+      transformer: transformers.sequential(),
     );
   }
 
@@ -40,7 +42,7 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
           final project = await _projectRepository.getProject(event.path);
 
           if (project.hasNoDependencies) {
-            return emit(const ProjectState.empty());
+            return emit(const ProjectState.noDependencies());
           }
 
           emit(ProjectState.gettingUpdates(project: project));

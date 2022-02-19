@@ -1,6 +1,10 @@
 {
   "appTitle": "pubdates",
-  "@appTitle": {
-    "description": "The title of the application"
-  }
+  "dependenciesTitle": "Dependencies",
+  "devDependenciesTitle": "Dev dependencies",
+  "selectProjectAction": "Select a Dart/Flutter Project",
+  "selectAction": "Select",
+  "projectNotSelect": "No project is selected",
+  "projectNoDependencies": "This project has no dependencies, thus no updates either. Good job!",
+  "invalidProject": "Invalid project"
 }

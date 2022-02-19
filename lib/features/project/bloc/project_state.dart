@@ -12,7 +12,7 @@ typedef AppError = dynamic;
 class ProjectState with _$ProjectState {
   const factory ProjectState.initial() = _NotProjectState;
 
-  const factory ProjectState.empty() = _NoDependenciesState;
+  const factory ProjectState.noDependencies() = _NoDependenciesState;
 
   const factory ProjectState.gettingDependencies() = _GettingDependenciesState;
 
