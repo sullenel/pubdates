@@ -24,6 +24,7 @@ class ProjectDependencyTile extends StatelessWidget {
           horizontal: AppInsets.lg,
         ),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Flexible(
