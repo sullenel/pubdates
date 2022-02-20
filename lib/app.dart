@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:pubdates/features/home/home_page.dart';
 import 'package:pubdates/features/project/repositories/project_repository.dart';
-import 'package:pubdates/features/project/services/pubspec_service.dart';
+import 'package:pubdates/features/project/services/pubspec_reader.dart';
 import 'package:pubdates/localization/app_localizations.dart';
 
 class App extends StatelessWidget {
@@ -15,8 +15,8 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
       providers: [
-        RepositoryProvider<PubspecService>(
-          create: (context) => const DefaultPubspecService(),
+        RepositoryProvider<PubspecReader>(
+          create: (context) => const DefaultPubspecReader(),
         ),
         RepositoryProvider<ProjectRepository>(
           create: (context) => DefaultProjectRepository(

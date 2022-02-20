@@ -6,14 +6,14 @@ import 'package:pubdates/features/project/models/project.dart';
 import 'package:pubspec_lock/pubspec_lock.dart';
 import 'package:pubspec_parse/pubspec_parse.dart';
 
-mixin PubspecService {
+mixin PubspecReader {
   Future<void> checkValidProject(Directory path);
 
   Future<Project> readProject(Directory path);
 }
 
-class DefaultPubspecService implements PubspecService {
-  const DefaultPubspecService({
+class DefaultPubspecReader implements PubspecReader {
+  const DefaultPubspecReader({
     String pubspecFileName = 'pubspec.yaml',
     String lockFileName = 'pubspec.lock',
   })  : _pubspecFileName = pubspecFileName,
