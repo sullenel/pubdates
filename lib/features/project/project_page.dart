@@ -11,7 +11,7 @@ import 'package:pubdates/features/project/widgets/invalid_project.dart';
 import 'package:pubdates/features/project/widgets/project_app_bar.dart';
 import 'package:pubdates/features/project/widgets/project_no_dependencies.dart';
 import 'package:pubdates/features/project/widgets/project_not_selected.dart';
-import 'package:pubdates/features/project/widgets/project_sidebar.dart';
+import 'package:pubdates/features/project/widgets/project_content.dart';
 
 class ProjectPage extends StatefulWidget {
   static Route<T> route<T>(String path) {
@@ -54,10 +54,19 @@ class _ProjectPageState extends State<ProjectPage> {
           return state.map(
             initial: (_) => ProjectNotSelected(onSelect: _handleSelectProject),
             noDependencies: (_) => const ProjectHasNoDependencies(),
-            gettingDependencies: (_) => const LoadingIndicator(),
-            gettingUpdates: (state) => ProjectSidebar(project: state.project),
-            // TODO: add a widget when everything is ready
-            loaded: (_) => const Placeholder(),
+            loading: (_) => const LoadingIndicator(),
+            gettingUpdates: (state) => ProjectContent(
+              project: state.project,
+              child: const LoadingIndicator(),
+            ),
+            noUpdates: (state) => ProjectContent(
+              project: state.project,
+              child: Text('No updates'),
+            ),
+            loaded: (state) => ProjectContent(
+              project: state.project,
+              child: Placeholder(),
+            ),
             invalidProject: (_) => const InvalidProject(),
           );
         },

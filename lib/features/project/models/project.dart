@@ -12,12 +12,25 @@ class Project with _$Project {
 
   const factory Project({
     required String name,
-    String? description,
     required List<Package> dependencies,
     required List<Package> devDependencies,
+    String? description,
   }) = _Project;
 
   bool get hasNoDependencies {
     return dependencies.isEmpty && devDependencies.isEmpty;
+  }
+
+  bool get hasDependenciesToBeUpgraded {
+    return allDependencies.any((it) => it.canBeUpgraded);
+  }
+
+  Iterable<Package> get allDependencies sync* {
+    yield* dependencies;
+    yield* devDependencies;
+  }
+
+  Iterable<Package> get dependenciesToBeUpgraded {
+    return allDependencies.where((it) => it.canBeUpgraded);
   }
 }

@@ -2,6 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:pubdates/common/constants/dimensions.dart';
 import 'package:pubdates/features/project/models/package.dart';
 
+extension on Package {
+  String get upgradePath {
+    final currentVersion = version ?? '-';
+
+    return update == null
+        ? currentVersion
+        : '$currentVersion -> ${update?.upgradableVersion}';
+  }
+}
+
 class ProjectDependencyTile extends StatelessWidget {
   const ProjectDependencyTile({
     Key? key,
@@ -35,7 +45,7 @@ class ProjectDependencyTile extends StatelessWidget {
             ),
             const SizedBox(height: AppInsets.md),
             Flexible(
-              child: Text(package.version ?? '-'),
+              child: Text(package.upgradePath),
             ),
           ],
         ),

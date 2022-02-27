@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart' as transformers;
 import 'package:pubdates/features/project/bloc/project_event.dart';
 import 'package:pubdates/features/project/bloc/project_state.dart';
+import 'package:pubdates/features/project/models/package.dart';
+import 'package:pubdates/features/project/models/package_update.dart';
 import 'package:pubdates/features/project/repositories/project_repository.dart';
 
 // Flow:
@@ -36,9 +40,10 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
         // TODO: report as error
       },
       initial: (state) async {
-        emit(const ProjectState.gettingDependencies());
+        emit(const ProjectState.loading());
 
         try {
+          // Get packages
           final project = await _projectRepository.getProject(event.path);
 
           if (project.hasNoDependencies) {
@@ -47,13 +52,43 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
 
           emit(ProjectState.gettingUpdates(project: project));
 
-          // Get updates
-          final updates =
-              await _projectRepository.getPackageUpdates(event.path).toList();
+          // Get package updates
+          final updates = await _getUpdates(event.path);
+
+          if (updates.isEmpty) {
+            return emit(ProjectState.noUpdates(project: project));
+          }
+
+          final dependencies = project.dependencies.mapUpdates(updates);
+          final devDependencies = project.devDependencies.mapUpdates(updates);
+          final updatedProject = project.copyWith(
+            dependencies: dependencies,
+            devDependencies: devDependencies,
+          );
+
+          emit(ProjectState.loaded(project: updatedProject));
         } on Object catch (error, stackTrace) {
+          print(error);
+          print(stackTrace);
           // TODO:
         }
       },
     );
   }
+
+  // NOTE: Maybe this should be in the repository?
+  Future<Map<String, PackageUpdate>> _getUpdates(Directory path) =>
+      _projectRepository
+          .getPackageUpdates(path)
+          .fold({}, (result, it) => result..putIfAbsent(it.name, () => it));
+}
+
+extension on Iterable<Package> {
+  List<Package> mapUpdates(Map<String, PackageUpdate> updates) => [
+        for (final pkg in this)
+          if (updates.containsKey(pkg.name))
+            pkg.copyWith(update: updates[pkg.name])
+          else
+            pkg
+      ];
 }

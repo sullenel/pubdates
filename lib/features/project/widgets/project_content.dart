@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:pubdates/features/project/models/project.dart';
 import 'package:pubdates/features/project/widgets/project_dependency_list.dart';
 
-class ProjectSidebar extends StatelessWidget {
-  const ProjectSidebar({
+class ProjectContent extends StatelessWidget {
+  const ProjectContent({
     Key? key,
     required this.project,
+    required this.child,
   }) : super(key: key);
 
   final Project project;
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +22,9 @@ class ProjectSidebar extends StatelessWidget {
             devDependencies: project.devDependencies,
           ),
         ),
-        const Expanded(
+        Expanded(
           flex: 3,
-          child: Placeholder(),
+          child: child,
         ),
       ],
     );

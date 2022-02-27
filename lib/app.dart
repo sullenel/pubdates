@@ -4,6 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:pubdates/features/home/home_page.dart';
 import 'package:pubdates/features/project/repositories/project_repository.dart';
 import 'package:pubdates/features/project/services/pubspec_reader.dart';
+import 'package:pubdates/features/project/services/package_service.dart';
 import 'package:pubdates/localization/app_localizations.dart';
 
 class App extends StatelessWidget {
@@ -18,13 +19,18 @@ class App extends StatelessWidget {
         RepositoryProvider<PubspecReader>(
           create: (context) => const DefaultPubspecReader(),
         ),
+        RepositoryProvider<PackageService>(
+          create: (context) => const DefaultPackageService(),
+        ),
         RepositoryProvider<ProjectRepository>(
           create: (context) => DefaultProjectRepository(
             pubspecService: context.read(),
+            packageUpdater: context.read(),
           ),
         ),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         restorationScopeId: 'app',
         localizationsDelegates: const [
           AppLocalizations.delegate,
@@ -37,8 +43,8 @@ class App extends StatelessWidget {
         ],
         onGenerateTitle: (BuildContext context) =>
             AppLocalizations.of(context).appTitle,
-        theme: ThemeData(),
-        darkTheme: ThemeData.dark(),
+        theme: ThemeData.light().copyWith(useMaterial3: true),
+        darkTheme: ThemeData.dark().copyWith(useMaterial3: true),
         onGenerateRoute: (RouteSettings routeSettings) {
           return MaterialPageRoute(builder: (_) => const HomePage());
         },

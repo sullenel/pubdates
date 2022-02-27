@@ -2,7 +2,8 @@ import 'dart:io';
 
 import 'package:pubdates/features/project/models/package_update.dart';
 import 'package:pubdates/features/project/models/project.dart';
-import 'package:pubdates/features/project/services/pubspec_service.dart';
+import 'package:pubdates/features/project/services/pubspec_reader.dart';
+import 'package:pubdates/features/project/services/package_service.dart';
 
 mixin ProjectRepository {
   Future<Project> getProject(Directory path);
@@ -12,15 +13,17 @@ mixin ProjectRepository {
 
 class DefaultProjectRepository implements ProjectRepository {
   const DefaultProjectRepository({
-    required PubspecService pubspecService,
-  }) : _pubspecService = pubspecService;
+    required PubspecReader pubspecService,
+    required PackageService packageUpdater,
+  })  : _pubspecService = pubspecService,
+        _packageUpdater = packageUpdater;
 
-  final PubspecService _pubspecService;
+  final PubspecReader _pubspecService;
+  final PackageService _packageUpdater;
 
   @override
   Stream<PackageUpdate> getPackageUpdates(Directory path) {
-    // TODO: implement getPackageUpdates
-    throw UnimplementedError();
+    return _packageUpdater.packagesToBeUpdated(path);
   }
 
   @override

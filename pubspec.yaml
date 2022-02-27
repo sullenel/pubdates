@@ -21,6 +21,7 @@ dependencies:
   pubspec_lock: ^3.0.1
   pubspec_parse: ^1.2.0
   path: ^1.8.0
+  process_run: ^0.12.3
 
   # Native
   file_selector: ^0.8.3

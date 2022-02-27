@@ -10,15 +10,19 @@ typedef AppError = dynamic;
 
 @freezed
 class ProjectState with _$ProjectState {
-  const factory ProjectState.initial() = _NotProjectState;
+  const factory ProjectState.initial() = _InitialProjectState;
 
   const factory ProjectState.noDependencies() = _NoDependenciesState;
 
-  const factory ProjectState.gettingDependencies() = _GettingDependenciesState;
+  const factory ProjectState.loading() = _GettingDependenciesState;
 
   const factory ProjectState.gettingUpdates({
     required Project project,
   }) = _GettingDependencyUpdatesState;
+
+  const factory ProjectState.noUpdates({
+    required Project project,
+  }) = _NoDependencyUpdatesState;
 
   const factory ProjectState.loaded({
     required Project project,
