@@ -17,4 +17,10 @@ class Package with _$Package {
   bool get canBeUpgraded {
     return update != null && version != update?.upgradableVersion;
   }
+
+  Uri get changeLogUrl {
+    return Uri.parse(url!).replace(
+      pathSegments: ['packages', name, 'changelog'],
+    );
+  }
 }

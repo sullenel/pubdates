@@ -18,10 +18,14 @@ dependencies:
   bloc: ^8.0.2
   bloc_concurrency: ^0.2.0
   flutter_bloc: ^8.0.1
+  provider: ^6.0.0
   pubspec_lock: ^3.0.1
   pubspec_parse: ^1.2.0
   path: ^1.8.0
   process_run: ^0.12.3
+  http: ^0.13.4
+  html: ^0.15.0
+  flutter_widget_from_html_core: ^0.8.5
 
   # Native
   file_selector: ^0.8.3

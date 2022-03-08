@@ -26,19 +26,17 @@ class ProjectDependencyList extends StatelessWidget {
 
     late final t = AppLocalizations.of(context);
 
-    return Scrollbar(
-      child: CustomScrollView(
-        slivers: [
-          if (dependencies.isNotEmpty) ...[
-            SliverBox(child: SectionTitle(title: t.dependenciesTitle)),
-            _DependencyList(dependencies: dependencies),
-          ],
-          if (devDependencies.isNotEmpty) ...[
-            SliverBox(child: SectionTitle(title: t.devDependenciesTitle)),
-            _DependencyList(dependencies: devDependencies),
-          ],
+    return CustomScrollView(
+      slivers: [
+        if (dependencies.isNotEmpty) ...[
+          SliverBox(child: SectionTitle(title: t.dependenciesTitle)),
+          _DependencyList(dependencies: dependencies),
         ],
-      ),
+        if (devDependencies.isNotEmpty) ...[
+          SliverBox(child: SectionTitle(title: t.devDependenciesTitle)),
+          _DependencyList(dependencies: devDependencies),
+        ],
+      ],
     );
   }
 }

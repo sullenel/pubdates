@@ -6,5 +6,39 @@
   "selectAction": "Select",
   "projectNotSelect": "No project is selected",
   "projectNoDependencies": "This project has no dependencies, thus no updates either. Good job!",
-  "invalidProject": "Invalid project"
+  "invalidProject": "Invalid project",
+  "currentVersion": "Current: {version}",
+  "@currentVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "upgradableVersion": "Upgradable: {version}",
+  "@upgradableVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "resolvableVersion": "Resolvable: {version}",
+  "@resolvableVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "latestVersion": "Latest: {version}",
+  "@latestVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "openChangelogTooltip": "Open changelog in browser",
+  "showAllAction": "Show All"
 }
