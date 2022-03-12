@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:pubdates/common/themes.dart';
 import 'package:pubdates/features/home/home_page.dart';
 import 'package:pubdates/features/project/repositories/project_repository.dart';
 import 'package:pubdates/features/project/services/pubspec_reader.dart';
@@ -43,8 +44,9 @@ class App extends StatelessWidget {
         ],
         onGenerateTitle: (BuildContext context) =>
             AppLocalizations.of(context).appTitle,
-        theme: ThemeData.light().copyWith(useMaterial3: true),
-        darkTheme: ThemeData.dark().copyWith(useMaterial3: true),
+        theme: lightTheme,
+        darkTheme: darkTheme,
+        themeMode: ThemeMode.system,
         onGenerateRoute: (RouteSettings routeSettings) {
           return MaterialPageRoute(builder: (_) => const HomePage());
         },

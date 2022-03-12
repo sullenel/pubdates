@@ -40,5 +40,17 @@
     }
   },
   "openChangelogTooltip": "Open changelog in browser",
-  "showAllAction": "Show All"
+  "showAllAction": "Show All",
+  "packageCountTooltip": "Total packages: {totalCount}. Packages to be upgraded: {updateCount}.",
+  "@packageCountTooltip": {
+    "placeholders": {
+      "totalCount": {
+        "type": "int"
+      },
+      "updateCount": {
+        "type": "int"
+      }
+    }
+  },
+  "noChangeLog": "Failed to parse changelog"
 }

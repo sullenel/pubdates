@@ -13,7 +13,7 @@ import 'package:pubdates/features/changelog/services/changelog_provider.dart';
 import 'package:pubdates/features/project/bloc/project_bloc.dart';
 import 'package:pubdates/features/project/bloc/project_event.dart';
 import 'package:pubdates/features/project/bloc/project_state.dart';
-import 'package:pubdates/features/project/widgets/changelog_list.dart';
+import 'package:pubdates/features/changelog/widgets/changelog_list.dart';
 import 'package:pubdates/features/project/widgets/invalid_project.dart';
 import 'package:pubdates/features/project/widgets/project_app_bar.dart';
 import 'package:pubdates/features/project/widgets/project_no_dependencies.dart';
@@ -85,9 +85,8 @@ class _ProjectPageState extends State<ProjectPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const ProjectAppBar(),
-      body: BlocConsumer<ProjectBloc, ProjectState>(
+    return Material(
+      child: BlocConsumer<ProjectBloc, ProjectState>(
         listener: _handleProjectState,
         builder: (context, state) {
           return state.map(

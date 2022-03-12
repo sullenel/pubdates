@@ -1,22 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:pubdates/common/constants/dimensions.dart';
+import 'package:pubdates/common/widgets/space.dart';
 
 class SectionTitle extends StatelessWidget {
   const SectionTitle({
     Key? key,
     required this.title,
+    this.trailing,
   }) : super(key: key);
 
   final String title;
+  final Widget? trailing;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(AppInsets.lg),
-      child: Text(
-        title,
-        style: Theme.of(context).textTheme.headline6,
-      ),
+    final theme = Theme.of(context);
+
+    return Row(
+      children: [
+        Expanded(
+          child: Text(
+            title,
+            style: theme.textTheme.headlineSmall?.copyWith(
+              fontWeight: FontWeight.bold,
+              color: theme.colorScheme.onSecondary.withOpacity(0.2),
+            ),
+          ),
+        ),
+        if (trailing != null) ...[
+          const HSpace(AppInsets.md),
+          trailing!,
+        ],
+      ],
     );
   }
 }

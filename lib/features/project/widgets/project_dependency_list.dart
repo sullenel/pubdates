@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:pubdates/common/constants/dimensions.dart';
 import 'package:pubdates/common/utils/typedefs.dart';
 import 'package:pubdates/features/project/models/package.dart';
 import 'package:pubdates/features/project/widgets/project_dependency_tile.dart';
 import 'package:pubdates/features/project/widgets/section_title.dart';
 import 'package:pubdates/localization/app_localizations.dart';
+
+extension on List<Package> {
+  int get totalCount => length;
+
+  int get toBeUpgradedCount => where((it) => it.canBeUpgraded).length;
+}
 
 class ProjectDependencyList extends StatelessWidget {
   const ProjectDependencyList({
@@ -25,18 +32,58 @@ class ProjectDependencyList extends StatelessWidget {
     );
 
     late final t = AppLocalizations.of(context);
+    final theme = Theme.of(context);
 
-    return CustomScrollView(
-      slivers: [
-        if (dependencies.isNotEmpty) ...[
-          SliverBox(child: SectionTitle(title: t.dependenciesTitle)),
-          _DependencyList(dependencies: dependencies),
+    return Material(
+      color: theme.colorScheme.secondary,
+      child: CustomScrollView(
+        primary: false,
+        slivers: [
+          if (dependencies.isNotEmpty) ...[
+            SliverPadding(
+              padding: const EdgeInsets.all(AppInsets.lg) -
+                  const EdgeInsets.only(bottom: AppInsets.lg),
+              sliver: SliverBox(
+                child: SectionTitle(
+                  title: t.dependenciesTitle,
+                  trailing: _PackageCount(
+                    totalCount: dependencies.totalCount,
+                    toBeUpgradedCount: dependencies.toBeUpgradedCount,
+                  ),
+                ),
+              ),
+            ),
+            SliverPadding(
+              padding: const EdgeInsets.symmetric(vertical: AppInsets.md),
+              sliver: _DependencyList(
+                dependencies: dependencies,
+                onPressed: onPackagePressed,
+              ),
+            ),
+          ],
+          if (devDependencies.isNotEmpty) ...[
+            SliverPadding(
+              padding: const EdgeInsets.symmetric(horizontal: AppInsets.lg),
+              sliver: SliverBox(
+                child: SectionTitle(
+                  title: t.devDependenciesTitle,
+                  trailing: _PackageCount(
+                    totalCount: devDependencies.totalCount,
+                    toBeUpgradedCount: devDependencies.toBeUpgradedCount,
+                  ),
+                ),
+              ),
+            ),
+            SliverPadding(
+              padding: const EdgeInsets.symmetric(vertical: AppInsets.md),
+              sliver: _DependencyList(
+                dependencies: devDependencies,
+                onPressed: onPackagePressed,
+              ),
+            ),
+          ],
         ],
-        if (devDependencies.isNotEmpty) ...[
-          SliverBox(child: SectionTitle(title: t.devDependenciesTitle)),
-          _DependencyList(dependencies: devDependencies),
-        ],
-      ],
+      ),
     );
   }
 }
@@ -68,6 +115,45 @@ class _DependencyList extends StatelessWidget {
     return ProjectDependencyTile(
       onPressed: onPressed == null ? null : () => onPressed!(pkg),
       package: pkg,
+    );
+  }
+}
+
+class _PackageCount extends StatelessWidget {
+  const _PackageCount({
+    Key? key,
+    required this.totalCount,
+    this.toBeUpgradedCount = 0,
+  }) : super(key: key);
+
+  final int totalCount;
+  final int toBeUpgradedCount;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final t = AppLocalizations.of(context);
+    final tooltip = t.packageCountTooltip(totalCount, toBeUpgradedCount);
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        borderRadius: AppBorders.button,
+        color: theme.colorScheme.onSecondary,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          vertical: AppInsets.sm,
+          horizontal: AppInsets.md,
+        ),
+        child: Tooltip(
+          message: tooltip,
+          child: Text(
+            '$totalCount / $toBeUpgradedCount',
+            style: theme.textTheme.labelMedium,
+            semanticsLabel: tooltip,
+          ),
+        ),
+      ),
     );
   }
 }

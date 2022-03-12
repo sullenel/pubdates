@@ -14,19 +14,24 @@ class ProjectContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: ProjectDependencyList(
-            dependencies: project.dependencies,
-            devDependencies: project.devDependencies,
-          ),
-        ),
-        Expanded(
-          flex: 3,
-          child: child,
-        ),
-      ],
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // TODO: add responsiveness
+        return Row(
+          children: [
+            Expanded(
+              child: ProjectDependencyList(
+                dependencies: project.dependencies,
+                devDependencies: project.devDependencies,
+              ),
+            ),
+            Expanded(
+              flex: 3,
+              child: child,
+            ),
+          ],
+        );
+      },
     );
   }
 }

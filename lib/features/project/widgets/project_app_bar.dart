@@ -10,6 +10,11 @@ class ProjectAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     // TODO: should display the project name and dependencies count
     // TODO: add a button to add/remove the project to/from bookmarks?
-    return AppBar();
+    return AppBar(
+      automaticallyImplyLeading: false,
+      actions: [
+        const CloseButton(),
+      ],
+    );
   }
 }

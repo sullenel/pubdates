@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pubdates/common/constants/dimensions.dart';
 import 'package:pubdates/common/widgets/loading_indicator.dart';
 import 'package:pubdates/features/changelog/bloc/changelog_bloc.dart';
 import 'package:pubdates/features/changelog/bloc/changelog_state.dart';
 import 'package:pubdates/features/changelog/models/package_changelog.dart';
-import 'package:pubdates/features/project/widgets/changelog_summary.dart';
+import 'package:pubdates/features/changelog/widgets/changelog_summary.dart';
 
 class ChangeLogList extends StatelessWidget {
   const ChangeLogList({Key? key}) : super(key: key);
@@ -33,11 +34,21 @@ class _ChangeLogList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: logs.length,
-      itemBuilder: (context, index) {
-        return ChangeLogSummary(changeLog: logs[index]);
-      },
+    return Scrollbar(
+      isAlwaysShown: true,
+      child: ListView.builder(
+        padding: const EdgeInsets.symmetric(vertical: AppInsets.md),
+        physics: const AlwaysScrollableScrollPhysics(),
+        itemCount: logs.length,
+        itemBuilder: (context, index) {
+          final item = logs[index];
+
+          return ChangeLogSummary(
+            changeLog: item,
+            onOpenPressed: () => print(item.package.changeLogUrl),
+          );
+        },
+      ),
     );
   }
 }
