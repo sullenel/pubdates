@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pubdates/common/constants/dimensions.dart';
+import 'package:pubdates/common/utils/scroll_utils.dart';
 import 'package:pubdates/common/utils/typedefs.dart';
 import 'package:pubdates/common/utils/url_utils.dart';
 import 'package:pubdates/common/widgets/loading_indicator.dart';
@@ -8,6 +9,8 @@ import 'package:pubdates/features/changelog/bloc/changelog_bloc.dart';
 import 'package:pubdates/features/changelog/bloc/changelog_state.dart';
 import 'package:pubdates/features/changelog/models/package_changelog.dart';
 import 'package:pubdates/features/changelog/widgets/changelog_summary.dart';
+import 'package:pubdates/features/project/models/package.dart';
+import 'package:scroll_to_index/scroll_to_index.dart';
 
 class ChangeLogList extends StatefulWidget {
   const ChangeLogList({Key? key}) : super(key: key);
@@ -57,24 +60,29 @@ class _ChangeLogList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scrollbar(
-      isAlwaysShown: true,
-      child: ListView.builder(
-        padding: const EdgeInsets.symmetric(vertical: AppInsets.md),
-        physics: const AlwaysScrollableScrollPhysics(),
-        itemCount: logs.length,
-        itemBuilder: (context, index) {
-          final item = logs[index];
+    final scrollController = context.read<ScrollManager<Package>>().controller;
 
-          return ChangeLogSummary(
+    return ListView.builder(
+      controller: scrollController,
+      padding: const EdgeInsets.symmetric(vertical: AppInsets.md),
+      physics: const AlwaysScrollableScrollPhysics(),
+      itemCount: logs.length,
+      itemBuilder: (context, index) {
+        final item = logs[index];
+
+        return AutoScrollTag(
+          key: ValueKey(index),
+          index: index,
+          controller: scrollController,
+          child: ChangeLogSummary(
             changeLog: item,
             onLinkPressed: onLinkPressed,
             onOpenPressed: onLinkPressed == null
                 ? null
                 : () => onLinkPressed!(item.package.changeLogUrl.toString()),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }

@@ -37,6 +37,7 @@ class ProjectDependencyTile extends StatelessWidget {
       ),
       child: InkWell(
         onTap: onPressed,
+        borderRadius: AppBorders.button,
         child: Ink(
           decoration: BoxDecoration(
             borderRadius: AppBorders.button,

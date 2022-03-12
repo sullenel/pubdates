@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pubdates/common/utils/scroll_utils.dart';
+import 'package:pubdates/features/project/models/package.dart';
 import 'package:pubdates/features/project/models/project.dart';
 import 'package:pubdates/features/project/widgets/project_dependency_list.dart';
 
@@ -14,21 +17,23 @@ class ProjectContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final sidebar = ProjectDependencyList(
+      onPackagePressed: (pkg) {
+        if (pkg.canBeUpgraded) {
+          context.read<ScrollManager<Package>>().scrollTo(pkg);
+        }
+      },
+      dependencies: project.dependencies,
+      devDependencies: project.devDependencies,
+    );
+
     return LayoutBuilder(
       builder: (context, constraints) {
         // TODO: add responsiveness
         return Row(
           children: [
-            Expanded(
-              child: ProjectDependencyList(
-                dependencies: project.dependencies,
-                devDependencies: project.devDependencies,
-              ),
-            ),
-            Expanded(
-              flex: 3,
-              child: child,
-            ),
+            Expanded(child: sidebar),
+            Expanded(flex: 3, child: child),
           ],
         );
       },
