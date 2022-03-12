@@ -15,7 +15,6 @@ import 'package:pubdates/features/project/bloc/project_event.dart';
 import 'package:pubdates/features/project/bloc/project_state.dart';
 import 'package:pubdates/features/changelog/widgets/changelog_list.dart';
 import 'package:pubdates/features/project/widgets/invalid_project.dart';
-import 'package:pubdates/features/project/widgets/project_app_bar.dart';
 import 'package:pubdates/features/project/widgets/project_no_dependencies.dart';
 import 'package:pubdates/features/project/widgets/project_not_selected.dart';
 import 'package:pubdates/features/project/widgets/project_content.dart';
