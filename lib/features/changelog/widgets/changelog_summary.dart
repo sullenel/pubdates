@@ -133,29 +133,37 @@ class _PackageVersions extends StatelessWidget {
     return Row(
       children: [
         if (update.currentVersion != null)
-          Text(
-            t.currentVersion(update.currentVersion!),
-            style: textStyle,
+          Flexible(
+            child: Text(
+              t.currentVersion(update.currentVersion!),
+              style: textStyle,
+            ),
           ),
         if (update.upgradableVersion != null) ...[
           separator,
-          Text(
-            t.upgradableVersion(update.upgradableVersion!),
-            style: textStyle,
+          Flexible(
+            child: Text(
+              t.upgradableVersion(update.upgradableVersion!),
+              style: textStyle,
+            ),
           ),
         ],
         if (update.resolvableVersion != null) ...[
           separator,
-          Text(
-            t.resolvableVersion(update.resolvableVersion!),
-            style: textStyle,
+          Flexible(
+            child: Text(
+              t.resolvableVersion(update.resolvableVersion!),
+              style: textStyle,
+            ),
           ),
         ],
         if (update.latestVersion != null) ...[
           separator,
-          Text(
-            t.latestVersion(update.latestVersion!),
-            style: textStyle,
+          Flexible(
+            child: Text(
+              t.latestVersion(update.latestVersion!),
+              style: textStyle,
+            ),
           ),
         ],
       ],
