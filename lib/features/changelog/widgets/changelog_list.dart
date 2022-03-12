@@ -68,6 +68,7 @@ class _ChangeLogList extends StatelessWidget {
 
           return ChangeLogSummary(
             changeLog: item,
+            onLinkPressed: onLinkPressed,
             onOpenPressed: onLinkPressed == null
                 ? null
                 : () => onLinkPressed!(item.package.changeLogUrl.toString()),

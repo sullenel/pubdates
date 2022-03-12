@@ -4,6 +4,7 @@ import 'package:html/dom.dart' as html;
 import 'package:pubdates/common/constants/colors.dart';
 import 'package:pubdates/common/constants/dimensions.dart';
 import 'package:pubdates/common/utils/flutter_utils.dart';
+import 'package:pubdates/common/utils/typedefs.dart';
 import 'package:pubdates/common/widgets/space.dart';
 
 class HtmlContent extends StatelessWidget {
@@ -14,7 +15,7 @@ class HtmlContent extends StatelessWidget {
   }) : super(key: key);
 
   final String text;
-  final ValueSetter<String>? onLinkPressed;
+  final LinkCallback? onLinkPressed;
 
   Widget? _customWidgetBuilder(html.Element el) {
     // No idea how to remove hash links otherwise

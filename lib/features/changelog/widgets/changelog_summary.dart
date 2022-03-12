@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pubdates/common/constants/dimensions.dart';
 import 'package:pubdates/common/constants/icons.dart';
+import 'package:pubdates/common/utils/typedefs.dart';
 import 'package:pubdates/common/widgets/space.dart';
 import 'package:pubdates/features/changelog/models/changelog_content.dart';
 import 'package:pubdates/features/changelog/models/package_changelog.dart';
@@ -21,12 +22,14 @@ class ChangeLogSummary extends StatelessWidget {
     required this.changeLog,
     this.onPressed,
     this.onOpenPressed,
+    this.onLinkPressed,
     this.showAll = false,
   }) : super(key: key);
 
   final PackageChangeLog changeLog;
   final VoidCallback? onPressed;
   final VoidCallback? onOpenPressed;
+  final LinkCallback? onLinkPressed;
   final bool showAll;
 
   Iterable<ChangeLogContent> get _logs {
@@ -49,7 +52,10 @@ class ChangeLogSummary extends StatelessWidget {
             const Divider(height: 0),
             if (changeLog.hasLogs) ...[
               for (final log in _logs) ...[
-                _VersionChangeLog(log: log),
+                _VersionChangeLog(
+                  onLinkPressed: onLinkPressed,
+                  log: log,
+                ),
                 const Divider(height: 0),
               ],
               TextButton(
@@ -172,9 +178,14 @@ class _PackageVersions extends StatelessWidget {
 }
 
 class _VersionChangeLog extends StatelessWidget {
-  const _VersionChangeLog({Key? key, required this.log}) : super(key: key);
+  const _VersionChangeLog({
+    Key? key,
+    required this.log,
+    this.onLinkPressed,
+  }) : super(key: key);
 
   final ChangeLogContent log;
+  final LinkCallback? onLinkPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -197,7 +208,10 @@ class _VersionChangeLog extends StatelessWidget {
           const HSpace(AppInsets.lg),
           Expanded(
             flex: 10,
-            child: HtmlContent(text: log.content),
+            child: HtmlContent(
+              onLinkPressed: onLinkPressed,
+              text: log.content,
+            ),
           ),
         ],
       ),
