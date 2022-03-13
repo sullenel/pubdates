@@ -66,6 +66,10 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
             devDependencies: devDependencies,
           );
 
+          if (!updatedProject.hasDependenciesToBeUpgraded) {
+            return emit(ProjectState.noUpdates(project: updatedProject));
+          }
+
           emit(ProjectState.loaded(project: updatedProject));
         } on Object catch (error, stackTrace) {
           print(error);

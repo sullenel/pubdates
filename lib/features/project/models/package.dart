@@ -15,7 +15,9 @@ class Package with _$Package {
   }) = _Package;
 
   bool get canBeUpgraded {
-    return update != null && version != update?.upgradableVersion;
+    return update != null &&
+        (update?.currentVersion != update?.upgradableVersion ||
+            update?.currentVersion != update?.latestVersion);
   }
 
   Uri get changeLogUrl {
