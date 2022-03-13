@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pubdates/common/utils/scroll_utils.dart';
 import 'package:pubdates/features/project/models/package.dart';
 import 'package:pubdates/features/project/models/project.dart';
+import 'package:pubdates/features/project/widgets/project_app_bar.dart';
 import 'package:pubdates/features/project/widgets/project_dependency_list.dart';
 
 class ProjectContent extends StatelessWidget {
@@ -17,14 +18,17 @@ class ProjectContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final sidebar = ProjectDependencyList(
-      onPackagePressed: (pkg) {
-        if (pkg.canBeUpgraded) {
-          context.read<ScrollManager<Package>>().scrollTo(pkg);
-        }
-      },
-      dependencies: project.dependencies,
-      devDependencies: project.devDependencies,
+    final sidebar = Scaffold(
+      appBar: const ProjectAppBar(),
+      body: ProjectDependencyList(
+        onPackagePressed: (pkg) {
+          if (pkg.canBeUpgraded) {
+            context.read<ScrollManager<Package>>().scrollTo(pkg);
+          }
+        },
+        dependencies: project.dependencies,
+        devDependencies: project.devDependencies,
+      ),
     );
 
     return LayoutBuilder(

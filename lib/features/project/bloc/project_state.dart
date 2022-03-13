@@ -10,6 +10,8 @@ typedef AppError = dynamic;
 
 @freezed
 class ProjectState with _$ProjectState {
+  const ProjectState._();
+
   const factory ProjectState.initial() = _InitialProjectState;
 
   const factory ProjectState.noDependencies() = _NoDependenciesState;
@@ -35,4 +37,10 @@ class ProjectState with _$ProjectState {
     required AppError error,
     required Directory path,
   }) = _InvalidProjectState;
+
+  String? get projectName => mapOrNull(
+        gettingUpdates: (state) => state.project.name,
+        noUpdates: (state) => state.project.name,
+        loaded: (state) => state.project.name,
+      );
 }

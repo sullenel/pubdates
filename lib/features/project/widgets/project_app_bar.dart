@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pubdates/common/widgets/space.dart';
+import 'package:pubdates/features/project/bloc/project_bloc.dart';
+import 'package:pubdates/features/project/bloc/project_state.dart';
 
 class ProjectAppBar extends StatelessWidget implements PreferredSizeWidget {
   const ProjectAppBar({Key? key}) : super(key: key);
@@ -8,13 +12,11 @@ class ProjectAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: should display the project name and dependencies count
-    // TODO: add a button to add/remove the project to/from bookmarks?
     return AppBar(
-      automaticallyImplyLeading: false,
-      actions: [
-        const CloseButton(),
-      ],
+      title: BlocSelector<ProjectBloc, ProjectState, String?>(
+        selector: (state) => state.projectName,
+        builder: (context, name) => name == null ? Nothing : Text(name),
+      ),
     );
   }
 }

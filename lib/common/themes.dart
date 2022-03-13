@@ -9,12 +9,13 @@ ThemeData get lightTheme {
     onSecondary: Colors.white,
     surface: Colors.white,
     shadow: Colors.black26,
-    background: Color(0xFFF5F5F7),
+    background: Color(0xFFF5F5F5),
   );
 
   final appBarTheme = AppBarTheme(
-    backgroundColor: colorScheme.primary,
-    foregroundColor: colorScheme.onPrimary,
+    backgroundColor: colorScheme.secondary,
+    foregroundColor: colorScheme.onSecondary,
+    centerTitle: true,
     elevation: 0,
   );
 
@@ -45,6 +46,8 @@ ThemeData get lightTheme {
     cardTheme: cardTheme,
     dividerTheme: dividerTheme,
     scrollbarTheme: scrollBarTheme,
+    splashColor: Colors.black26,
+    highlightColor: Colors.black12,
   );
 }
 
