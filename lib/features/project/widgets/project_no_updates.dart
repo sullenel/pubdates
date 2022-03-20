@@ -2,23 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:pubdates/common/widgets/no_result.dart';
 import 'package:pubdates/localization/app_localizations.dart';
 
-class ProjectNotSelected extends StatelessWidget {
-  const ProjectNotSelected({
-    Key? key,
-    this.onSelect,
-  }) : super(key: key);
-
-  final VoidCallback? onSelect;
+class ProjectNoUpdates extends StatelessWidget {
+  const ProjectNoUpdates({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context);
 
     return NoResult(
-      title: t.projectNotSelect,
+      title: t.projectNoUpdates,
       child: TextButton(
-        onPressed: onSelect,
-        child: Text(t.selectAction),
+        onPressed: Navigator.of(context).pop,
+        child: Text(t.closeAction),
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pubdates/common/widgets/no_result.dart';
 import 'package:pubdates/localization/app_localizations.dart';
 
 class InvalidProject extends StatelessWidget {
@@ -6,8 +7,6 @@ class InvalidProject extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text(AppLocalizations.of(context).invalidProject),
-    );
+    return NoResult(title: AppLocalizations.of(context).invalidProject);
   }
 }

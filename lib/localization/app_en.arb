@@ -52,5 +52,7 @@
       }
     }
   },
-  "noChangeLog": "Failed to parse changelog"
+  "noChangeLog": "Failed to parse changelog",
+  "projectNoUpdates": "Everything is up to date",
+  "closeAction": "Close"
 }
