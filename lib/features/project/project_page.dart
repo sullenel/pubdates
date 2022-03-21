@@ -127,7 +127,7 @@ class _ProjectPageState extends State<ProjectPage> {
               project: state.project,
               child: const ChangeLogList(),
             ),
-            invalidProject: (_) => const InvalidProject(),
+            failed: (state) => InvalidProject(error: state.error),
           );
         },
       ),

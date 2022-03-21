@@ -1,12 +1,10 @@
 import 'dart:io';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:pubdates/common/models/errors.dart';
 import 'package:pubdates/features/project/models/project.dart';
 
 part 'project_state.freezed.dart';
-
-// TODO: replace
-typedef AppError = dynamic;
 
 @freezed
 class ProjectState with _$ProjectState {
@@ -33,10 +31,10 @@ class ProjectState with _$ProjectState {
   // Emitted when the provided path does not have the pubspec.yaml and
   // pubspec.lock files. The pubspec.lock is required since without it the app
   // is meaningless.
-  const factory ProjectState.invalidProject({
-    required AppError error,
+  const factory ProjectState.failed({
+    required AppException error,
     required Directory path,
-  }) = _InvalidProjectState;
+  }) = _FailedProjectState;
 
   String? get projectName => mapOrNull(
         gettingUpdates: (state) => state.project.name,

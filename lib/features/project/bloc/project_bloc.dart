@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart' as transformers;
+import 'package:pubdates/common/models/errors.dart';
 import 'package:pubdates/features/project/bloc/project_event.dart';
 import 'package:pubdates/features/project/bloc/project_state.dart';
 import 'package:pubdates/features/project/models/package.dart';
@@ -33,51 +34,54 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
 
   Future<void> _handleProjectSelected(
     SelectProjectEvent event,
-    Emitter emit,
+    Emitter<ProjectState> emit,
   ) async {
     return state.maybeMap<Future<void>>(
+      initial: (_) => _load(event.path, emit),
+      loaded: (_) => _load(event.path, emit),
+      failed: (_) => _load(event.path, emit),
       orElse: () async {
         // TODO: report as error
       },
-      initial: (state) async {
-        emit(const ProjectState.loading());
-
-        try {
-          // Get packages
-          final project = await _projectRepository.getProject(event.path);
-
-          if (project.hasNoDependencies) {
-            return emit(const ProjectState.noDependencies());
-          }
-
-          emit(ProjectState.gettingUpdates(project: project));
-
-          // Get package updates
-          final updates = await _getUpdates(event.path);
-
-          if (updates.isEmpty) {
-            return emit(ProjectState.noUpdates(project: project));
-          }
-
-          final dependencies = project.dependencies.mapUpdates(updates);
-          final devDependencies = project.devDependencies.mapUpdates(updates);
-          final updatedProject = project.copyWith(
-            dependencies: dependencies,
-            devDependencies: devDependencies,
-          );
-
-          if (!updatedProject.hasDependenciesToBeUpgraded) {
-            return emit(ProjectState.noUpdates(project: updatedProject));
-          }
-
-          emit(ProjectState.loaded(project: updatedProject));
-        } on Object catch (error, stackTrace) {
-          print(error);
-          print(stackTrace);
-          // TODO:
-        }
-      },
     );
+  }
+
+  Future<void> _load(Directory path, Emitter<ProjectState> emit) async {
+    emit(const ProjectState.loading());
+
+    try {
+      // Get packages
+      final project = await _projectRepository.getProject(path);
+
+      if (project.hasNoDependencies) {
+        return emit(const ProjectState.noDependencies());
+      }
+
+      emit(ProjectState.gettingUpdates(project: project));
+
+      // Get package updates
+      final updates = await _getUpdates(path);
+
+      if (updates.isEmpty) {
+        return emit(ProjectState.noUpdates(project: project));
+      }
+
+      final dependencies = project.dependencies.mapUpdates(updates);
+      final devDependencies = project.devDependencies.mapUpdates(updates);
+      final updatedProject = project.copyWith(
+        dependencies: dependencies,
+        devDependencies: devDependencies,
+      );
+
+      if (!updatedProject.hasDependenciesToBeUpgraded) {
+        return emit(ProjectState.noUpdates(project: updatedProject));
+      }
+
+      emit(ProjectState.loaded(project: updatedProject));
+    } on AppException catch (error) {
+      emit(ProjectState.failed(error: error, path: path));
+      rethrow;
+    }
   }
 
   // NOTE: Maybe this should be in the repository?

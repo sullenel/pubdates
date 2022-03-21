@@ -6,7 +6,6 @@
   "selectAction": "Select",
   "projectNotSelect": "No project is selected",
   "projectNoDependencies": "This project has no dependencies, thus no updates either. Good job!",
-  "invalidProject": "Invalid project",
   "currentVersion": "Current: {version}",
   "@currentVersion": {
     "placeholders": {
@@ -54,5 +53,32 @@
   },
   "noChangeLog": "Failed to parse changelog",
   "projectNoUpdates": "Everything is up to date",
-  "closeAction": "Close"
+  "closeAction": "Close",
+  "errorPubNotFound": "Dart or Flutter binaries could not be found",
+  "errorInvalidProject": "The provided directory is not a valid Dart project",
+  "errorInvalidPubspec": "Failed to parse the file: {path}",
+  "@errorInvalidPubspec": {
+    "placeholders": {
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "errorPubspecNotFound": "The file could not be found: {path}",
+  "@errorPubspecNotFound": {
+    "placeholders": {
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "errorProjectNotFound": "The provided project could not be found",
+  "errorUnknown": "Unexpected error: {error}",
+  "@errorUnknown": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  }
 }

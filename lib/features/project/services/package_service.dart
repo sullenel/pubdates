@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:process_run/shell.dart';
+import 'package:pubdates/common/models/errors.dart';
 import 'package:pubdates/features/project/models/package_update.dart';
 
 // Cannot come up with a good name for this as always
@@ -29,10 +30,10 @@ class DefaultPackageService implements PackageService {
 
   // TODO: replace it with something more robust
   Future<Map<String, dynamic>> _getOutdatedPackages(Directory path) async {
-    final executable = whichSync('dart') ?? whichSync('flutter');
+    final executable = _findPathToPubExecutable();
 
     if (executable == null) {
-      throw Exception('Dart/Flutter is not installed on your system');
+      throw const AppException.pubNotFound();
     }
 
     final result = await Process.run(
@@ -42,5 +43,9 @@ class DefaultPackageService implements PackageService {
     );
 
     return json.decode(result.stdout);
+  }
+
+  String? _findPathToPubExecutable() {
+    return whichSync('dart') ?? whichSync('flutter');
   }
 }

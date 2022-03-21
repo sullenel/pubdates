@@ -1,10 +1,12 @@
 import 'dart:io';
 
 import 'package:path/path.dart' show join;
+import 'package:pubdates/common/models/errors.dart';
 import 'package:pubdates/features/project/models/package.dart';
 import 'package:pubdates/features/project/models/project.dart';
 import 'package:pubspec_lock/pubspec_lock.dart';
 import 'package:pubspec_parse/pubspec_parse.dart';
+import 'package:checked_yaml/checked_yaml.dart'; // NOTE: importing a transitive dependency
 
 mixin PubspecReader {
   Future<void> checkValidProject(Directory path);
@@ -22,6 +24,16 @@ class DefaultPubspecReader implements PubspecReader {
   final String _pubspecFileName;
   final String _lockFileName;
 
+  File _pubspecFile(Directory path) {
+    final filePath = join(path.absolute.path, _pubspecFileName);
+    return File(filePath);
+  }
+
+  File _pubspecLockFile(Directory path) {
+    final filePath = join(path.absolute.path, _lockFileName);
+    return File(filePath);
+  }
+
   @override
   Future<Project> readProject(Directory projectPath) async {
     final pubspec = await _readPubspecFile(projectPath);
@@ -38,21 +50,42 @@ class DefaultPubspecReader implements PubspecReader {
   Future<Pubspec> _readPubspecFile(Directory projectPath) async {
     final path = join(projectPath.absolute.path, _pubspecFileName);
     final file = File(path);
-    final content = await file.readAsString();
-    return Pubspec.parse(content);
+
+    try {
+      final content = await file.readAsString();
+      return Pubspec.parse(content);
+    } on FileSystemException {
+      throw AppException.pubspecNotFound(path: path);
+    } on ParsedYamlException {
+      throw AppException.invalidPubspec(path: path);
+    } on Exception catch (error, stackTrace) {
+      throw AppException.unknown(originalError: error, stackTrace: stackTrace);
+    }
   }
 
   Future<PubspecLock> _readLockFile(Directory projectPath) async {
     final path = join(projectPath.absolute.path, _lockFileName);
     final file = File(path);
-    final content = await file.readAsString();
-    return content.loadPubspecLockFromYaml();
+
+    try {
+      final content = await file.readAsString();
+      return content.loadPubspecLockFromYaml();
+    } on FileSystemException {
+      throw AppException.pubspecNotFound(path: path);
+    } catch (error) {
+      // NOTE: since the "loadPubspecLockFromYaml" method does not throw own
+      // errors, we have to capture all errors here.
+      throw AppException.invalidPubspec(path: path);
+    }
   }
 
+  // Not sure if this method is even needed though.
   @override
-  Future<void> checkValidProject(Directory path) {
-    // TODO: implement checkValidProject
-    throw UnimplementedError();
+  Future<void> checkValidProject(Directory path) async {
+    if (!(await _pubspecFile(path).exists() &&
+        await _pubspecLockFile(path).exists())) {
+      throw AppException.invalidProject(path: path);
+    }
   }
 }
 
