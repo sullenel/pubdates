@@ -5,7 +5,12 @@ import 'package:pubdates/features/project/bloc/project_bloc.dart';
 import 'package:pubdates/features/project/bloc/project_state.dart';
 
 class ProjectAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const ProjectAppBar({Key? key}) : super(key: key);
+  const ProjectAppBar({
+    Key? key,
+    this.withCloseAction = false,
+  }) : super(key: key);
+
+  final bool withCloseAction;
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
@@ -17,6 +22,9 @@ class ProjectAppBar extends StatelessWidget implements PreferredSizeWidget {
         selector: (state) => state.projectName,
         builder: (context, name) => name == null ? Nothing : Text(name),
       ),
+      actions: [
+        if (withCloseAction) const CloseButton(),
+      ],
     );
   }
 }
