@@ -505,12 +505,12 @@ packages:
     source: hosted
     version: "6.0.2"
   pub_semver:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: pub_semver
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.0"
+    version: "2.1.1"
   pubspec_lock:
     dependency: "direct main"
     description:
