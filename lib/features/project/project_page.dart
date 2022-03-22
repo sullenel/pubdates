@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:file_selector/file_selector.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
+import 'package:pubdates/common/constants/shortcuts.dart';
 import 'package:pubdates/common/utils/scroll_utils.dart';
 import 'package:pubdates/common/widgets/loading_indicator.dart';
 import 'package:pubdates/features/changelog/bloc/changelog_bloc.dart';
@@ -105,31 +106,39 @@ class _ProjectPageState extends State<ProjectPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: BlocConsumer<ProjectBloc, ProjectState>(
-        listener: _handleProjectState,
-        builder: (context, state) {
-          return state.map(
-            initial: (_) => ProjectNotSelected(
-              onSelect: _handleSelectProject,
-            ),
-            noDependencies: (_) => const ProjectHasNoDependencies(),
-            loading: (_) => const LoadingIndicator(),
-            gettingUpdates: (state) => ProjectContent(
-              project: state.project,
-              child: const LoadingIndicator(),
-            ),
-            noUpdates: (state) => ProjectContent(
-              project: state.project,
-              child: const ProjectNoUpdates(),
-            ),
-            loaded: (state) => ProjectContent(
-              project: state.project,
-              child: const ChangeLogList(),
-            ),
-            failed: (state) => InvalidProject(error: state.error),
-          );
-        },
+    return CallbackShortcuts(
+      bindings: {
+        AppShortcuts.close: Navigator.of(context).pop,
+      },
+      child: Focus(
+        autofocus: true,
+        child: Material(
+          child: BlocConsumer<ProjectBloc, ProjectState>(
+            listener: _handleProjectState,
+            builder: (context, state) {
+              return state.map(
+                initial: (_) => ProjectNotSelected(
+                  onSelect: _handleSelectProject,
+                ),
+                noDependencies: (_) => const ProjectHasNoDependencies(),
+                loading: (_) => const LoadingIndicator(),
+                gettingUpdates: (state) => ProjectContent(
+                  project: state.project,
+                  child: const LoadingIndicator(),
+                ),
+                noUpdates: (state) => ProjectContent(
+                  project: state.project,
+                  child: const ProjectNoUpdates(),
+                ),
+                loaded: (state) => ProjectContent(
+                  project: state.project,
+                  child: const ChangeLogList(),
+                ),
+                failed: (state) => InvalidProject(error: state.error),
+              );
+            },
+          ),
+        ),
       ),
     );
   }
