@@ -1,10 +1,11 @@
-import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as html;
 import 'package:pub_semver/pub_semver.dart';
 import 'package:pubdates/features/changelog/models/changelog_content.dart';
+import 'package:pubdates/features/changelog/services/changelog_parser/changelog_content_parser.dart';
 
 extension on List<ChangeLogContent> {
-  // In some package changelogs, versions are specified in ascending order.
+  // In some changelogs, versions are specified in ascending order. Examples:
+  // - https://pub.dev/packages/google_ml_vision/changelog
   List<ChangeLogContent> get sortedInDescendingOrder {
     if (_isInDescendingOrder) {
       return this;
@@ -34,33 +35,19 @@ extension on List<ChangeLogContent> {
 }
 
 class ChangeLogParser {
-  const ChangeLogParser();
+  static const ChangeLogContentParser defaultParser =
+      DefaultChangeLogContentParser(
+    nextParser: AlternativeChangeLogContentParser(),
+  );
+
+  const ChangeLogParser({
+    ChangeLogContentParser parser = defaultParser,
+  }) : _parser = parser;
+
+  final ChangeLogContentParser _parser;
 
   List<ChangeLogContent> parse(String content) {
     final document = html.parse(content);
-
-    return document
-        .querySelectorAll('.changelog-entry')
-        .map(_parseEntry)
-        .whereType<ChangeLogContent>()
-        .toList();
-  }
-
-  ChangeLogContent? _parseEntry(dom.Element el) {
-    final version = el.querySelector('.changelog-version')?.text;
-    final content = el.querySelector('.changelog-content')?.innerHtml.trim();
-
-    if (version == null || content == null) {
-      return null;
-    }
-
-    return ChangeLogContent(
-      version: _cleanVersion(version),
-      content: content,
-    );
-  }
-
-  String _cleanVersion(String value) {
-    return value.replaceAll('#', '').trim();
+    return _parser.parse(document).sortedInDescendingOrder;
   }
 }
