@@ -68,7 +68,6 @@ class AlternativeChangeLogContentParser implements ChangeLogContentParser {
 
   @override
   List<ChangeLogContent> parse(Document document) {
-    print('calling $runtimeType');
     final el = document.querySelector('.detail-tab-changelog-content');
 
     if (el == null) {
@@ -108,7 +107,13 @@ class AlternativeChangeLogContentParser implements ChangeLogContentParser {
   }
 
   String? _parseContent(Element el) {
-    final nextEl = el.nextElementSibling;
+    var nextEl = el.nextElementSibling;
+
+    // Changelog example: https://pub.dev/packages/google_fonts/changelog
+    if (nextEl?.localName == 'h3') {
+      nextEl = nextEl?.nextElementSibling;
+    }
+
     return nextEl?.localName == 'ul' ? nextEl?.outerHtml.trim() : null;
   }
 }
