@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:file_selector/file_selector.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pubdates/common/constants/dimensions.dart';
 import 'package:pubdates/common/constants/shortcuts.dart';
+import 'package:pubdates/common/utils/path_utils.dart';
 import 'package:pubdates/common/widgets/space.dart';
 import 'package:pubdates/features/home/widgets/app_logo.dart';
 import 'package:pubdates/features/project/project_page.dart';
@@ -16,8 +17,7 @@ class HomeBody extends StatefulWidget {
 
 class _HomeBodyState extends State<HomeBody> {
   void _handleSelectProject() async {
-    // TODO: move out of here
-    final path = await getDirectoryPath();
+    final path = await context.read<PathPicker>().selectDirectory();
 
     if (path != null) {
       Navigator.of(context).push(ProjectPage.route(path));

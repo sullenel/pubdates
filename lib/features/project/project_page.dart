@@ -2,10 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:file_selector/file_selector.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 import 'package:pubdates/common/constants/shortcuts.dart';
+import 'package:pubdates/common/utils/path_utils.dart';
 import 'package:pubdates/common/utils/scroll_utils.dart';
 import 'package:pubdates/common/widgets/loading_indicator.dart';
 import 'package:pubdates/features/changelog/bloc/changelog_bloc.dart';
@@ -24,8 +24,14 @@ import 'package:pubdates/features/project/widgets/project_no_updates.dart';
 import 'package:pubdates/features/project/widgets/project_not_selected.dart';
 import 'package:pubdates/features/project/widgets/project_content.dart';
 
+extension on BuildContext {
+  ProjectBloc get projectBloc => this.read();
+
+  ChangeLogBloc get changeLogBloc => this.read();
+}
+
 class ProjectPage extends StatefulWidget {
-  static Route<T> route<T>(String path) {
+  static Route<T> route<T>(Directory path) {
     return MaterialPageRoute(
       builder: (context) {
         return MultiProvider(
@@ -57,7 +63,7 @@ class ProjectPage extends StatefulWidget {
                 BlocProvider<ProjectBloc>(
                   create: (context) => ProjectBloc(
                     projectRepository: context.read(),
-                  )..add(ProjectEvent.select(path: Directory(path))),
+                  )..add(ProjectEvent.select(path: path)),
                 ),
                 BlocProvider<ChangeLogBloc>(
                   create: (context) => ChangeLogBloc(
@@ -81,13 +87,10 @@ class ProjectPage extends StatefulWidget {
 
 class _ProjectPageState extends State<ProjectPage> {
   void _handleSelectProject() async {
-    // TODO: abstract away
-    final dir = await getDirectoryPath();
+    final path = await context.read<PathPicker>().selectDirectory();
 
-    if (dir != null) {
-      context
-          .read<ProjectBloc>()
-          .add(ProjectEvent.select(path: Directory(dir)));
+    if (path != null) {
+      context.projectBloc.add(ProjectEvent.select(path: path));
     }
   }
 
@@ -96,10 +99,7 @@ class _ProjectPageState extends State<ProjectPage> {
       loaded: (state) {
         final packages = state.project.dependenciesToBeUpgraded;
         context.read<ScrollManager<Package>>().addAll(packages);
-
-        context
-            .read<ChangeLogBloc>()
-            .add(ChangeLogEvent.loadAll(packages: packages));
+        context.changeLogBloc.add(ChangeLogEvent.loadAll(packages: packages));
       },
     );
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:pubdates/common/themes.dart';
+import 'package:pubdates/common/utils/path_utils.dart';
 import 'package:pubdates/common/utils/url_utils.dart';
 import 'package:pubdates/features/home/home_page.dart';
 import 'package:pubdates/features/project/repositories/project_repository.dart';
@@ -20,6 +21,9 @@ class App extends StatelessWidget {
       providers: [
         RepositoryProvider<UrlOpener>(
           create: (_) => const UrlOpener(),
+        ),
+        RepositoryProvider<PathPicker>(
+          create: (_) => const PathPicker(),
         ),
         RepositoryProvider<PubspecReader>(
           create: (context) => const DefaultPubspecReader(),
