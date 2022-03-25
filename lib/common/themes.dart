@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pubdates/common/constants/colors.dart';
 import 'package:pubdates/common/constants/dimensions.dart';
 
 ThemeData get lightTheme {
@@ -32,14 +33,28 @@ ThemeData get lightTheme {
     ),
   );
 
-  const dividerTheme = const DividerThemeData(
+  const dividerTheme = DividerThemeData(
     thickness: 0,
     color: Colors.black12,
   );
 
   const scrollBarTheme = const ScrollbarThemeData();
 
+  final progressIndicatorTheme = ProgressIndicatorThemeData(
+    linearMinHeight: 4,
+    color: colorScheme.secondary,
+    circularTrackColor: AppColors.transparent,
+    linearTrackColor: AppColors.transparent,
+  );
+
+  final textButtonTheme = TextButtonThemeData(
+    style: ButtonStyle(
+      backgroundColor: MaterialStateProperty.all(colorScheme.secondary),
+    ),
+  );
+
   return ThemeData(
+    fontFamily: 'Roboto',
     useMaterial3: true,
     colorScheme: colorScheme,
     appBarTheme: appBarTheme,
@@ -48,6 +63,8 @@ ThemeData get lightTheme {
     scrollbarTheme: scrollBarTheme,
     splashColor: Colors.black26,
     highlightColor: Colors.black12,
+    progressIndicatorTheme: progressIndicatorTheme,
+    textButtonTheme: textButtonTheme,
   );
 }
 

@@ -6,7 +6,24 @@ class LoadingIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Center(
-      child: CircularProgressIndicator(),
+      child: SizedBox.square(
+        dimension: 24,
+        child: CircularProgressIndicator(strokeWidth: 4),
+      ),
     );
+  }
+}
+
+class LinearLoadingIndicator extends StatelessWidget {
+  const LinearLoadingIndicator({
+    Key? key,
+    this.value,
+  }) : super(key: key);
+
+  final double? value;
+
+  @override
+  Widget build(BuildContext context) {
+    return LinearProgressIndicator(value: value);
   }
 }

@@ -8,6 +8,7 @@ import 'package:pubdates/common/widgets/loading_indicator.dart';
 import 'package:pubdates/features/changelog/bloc/changelog_bloc.dart';
 import 'package:pubdates/features/changelog/bloc/changelog_state.dart';
 import 'package:pubdates/features/changelog/models/package_changelog.dart';
+import 'package:pubdates/features/changelog/widgets/changelog_loading_progress.dart';
 import 'package:pubdates/features/changelog/widgets/changelog_summary.dart';
 import 'package:pubdates/features/project/models/package.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
@@ -30,20 +31,30 @@ class _ChangeLogListState extends State<ChangeLogList> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ChangeLogBloc, ChangeLogState>(
-      builder: (context, state) {
-        return state.map(
-          waitingForPackages: (_) => const LoadingIndicator(),
-          loading: (state) => _ChangeLogList(
-            onLinkPressed: _handleUrl,
-            logs: state.loaded,
-          ),
-          loaded: (state) => _ChangeLogList(
-            onLinkPressed: _handleUrl,
-            logs: state.loaded,
-          ),
-        );
-      },
+    return Stack(
+      children: [
+        BlocBuilder<ChangeLogBloc, ChangeLogState>(
+          builder: (context, state) {
+            return state.map(
+              waitingForPackages: (_) => const LoadingIndicator(),
+              loading: (state) => _ChangeLogList(
+                onLinkPressed: _handleUrl,
+                logs: state.loaded,
+              ),
+              loaded: (state) => _ChangeLogList(
+                onLinkPressed: _handleUrl,
+                logs: state.loaded,
+              ),
+            );
+          },
+        ),
+        const Positioned(
+          left: 0,
+          right: 0,
+          bottom: 0,
+          child: ChangeLogLoadingProgress(),
+        ),
+      ],
     );
   }
 }

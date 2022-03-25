@@ -33,9 +33,7 @@ class ChangeLogBloc extends Bloc<ChangeLogEvent, ChangeLogState> {
         final pending = DoubleLinkedQueue<Package>.of(packages);
         var loaded = <PackageChangeLog>[];
 
-        emit(ChangeLogState.loading(pending: pending, loaded: loaded));
-
-        while (pending.isNotEmpty) {
+        while (pending.isNotEmpty && !isClosed) {
           final package = pending.removeFirst();
 
           try {
@@ -46,7 +44,6 @@ class ChangeLogBloc extends Bloc<ChangeLogEvent, ChangeLogState> {
             emit(ChangeLogState.loading(pending: pending, loaded: loaded));
           } on Exception catch (error, stackTrace) {
             // TODO: handle errors
-            pending.addLast(package);
           }
         }
 
