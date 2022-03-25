@@ -200,14 +200,14 @@ class _VersionChangeLog extends StatelessWidget {
           Expanded(
             child: Text(
               log.version,
-              textAlign: TextAlign.end,
+              textAlign: TextAlign.start,
               style: theme.textTheme.titleMedium
                   ?.copyWith(fontWeight: FontWeight.bold),
             ),
           ),
           const HSpace(AppInsets.lg),
           Expanded(
-            flex: 10,
+            flex: 8,
             child: HtmlContent(
               onLinkPressed: onLinkPressed,
               text: log.content,
