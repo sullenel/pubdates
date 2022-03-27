@@ -80,5 +80,7 @@
         "type": "String"
       }
     }
-  }
+  },
+  "projectLogoTooltip": "Project logo",
+  "recent": "Recent"
 }

@@ -13,6 +13,7 @@ import 'package:pubdates/features/changelog/bloc/changelog_event.dart';
 import 'package:pubdates/features/changelog/repositories/changelog_repository.dart';
 import 'package:pubdates/features/changelog/services/changelog_parser.dart';
 import 'package:pubdates/features/changelog/services/changelog_provider.dart';
+import 'package:pubdates/features/opened_projects/bloc/opened_projects_bloc.dart';
 import 'package:pubdates/features/project/bloc/project_bloc.dart';
 import 'package:pubdates/features/project/bloc/project_event.dart';
 import 'package:pubdates/features/project/bloc/project_state.dart';
@@ -28,6 +29,8 @@ extension on BuildContext {
   ProjectBloc get projectBloc => this.read();
 
   ChangeLogBloc get changeLogBloc => this.read();
+
+  OpenedProjectsBloc get projectsBloc => this.read();
 }
 
 class ProjectPage extends StatefulWidget {
@@ -91,6 +94,8 @@ class _ProjectPageState extends State<ProjectPage> {
 
     if (path != null) {
       context.projectBloc.add(ProjectEvent.select(path: path));
+      // TODO: move to _handleProjectState once state fields are adjusted
+      context.projectsBloc.add(OpenedProjectsEvent.add(path: path));
     }
   }
 
