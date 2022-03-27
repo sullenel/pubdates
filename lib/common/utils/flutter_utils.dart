@@ -1,4 +1,4 @@
-import 'dart:ui';
+import 'package:flutter/material.dart';
 
 extension ColorExtension on Color {
   // Source: https://stackoverflow.com/q/55147586
@@ -9,4 +9,12 @@ extension ColorExtension on Color {
 
     return '$leading$value';
   }
+}
+
+extension BuildContextExtension on BuildContext {
+  ThemeData get theme => Theme.of(this);
+
+  TextTheme get textTheme => theme.textTheme;
+
+  ColorScheme get colorScheme => theme.colorScheme;
 }
