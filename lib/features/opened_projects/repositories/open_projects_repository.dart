@@ -65,7 +65,7 @@ class OpenProjectsRepository {
   Future<void> remove(OpenedProjectEntry project) async {
     final savedPaths = await _openedProjectPaths;
     final projectPath = project.fullPath;
-    final projects = savedPaths.where((it) => it == projectPath).toList();
+    final projects = savedPaths.where((it) => it != projectPath).toList();
     return _storage.putStrings(_projectsKey, projects);
   }
 

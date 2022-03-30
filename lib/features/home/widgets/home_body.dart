@@ -8,12 +8,15 @@ import 'package:pubdates/common/utils/flutter_utils.dart';
 import 'package:pubdates/common/utils/path_utils.dart';
 import 'package:pubdates/features/home/widgets/home_header.dart';
 import 'package:pubdates/features/opened_projects/bloc/opened_projects_bloc.dart';
+import 'package:pubdates/features/opened_projects/models/opened_project_entry.dart';
 import 'package:pubdates/features/opened_projects/widgets/opened_projects_list.dart';
 import 'package:pubdates/features/project/project_page.dart';
 
 extension on BuildContext {
   bool get hasOpenedProjects =>
       select<OpenedProjectsBloc, bool>((bloc) => bloc.state.isNotEmpty);
+
+  OpenedProjectsBloc get openedProjectsBloc => read();
 }
 
 class HomeBody extends StatefulWidget {
@@ -34,8 +37,12 @@ class _HomeBodyState extends State<HomeBody> {
 
   void _handleOpenProject(Directory path) {
     // TODO: remove this
-    context.read<OpenedProjectsBloc>().add(OpenedProjectsEvent.add(path: path));
+    context.openedProjectsBloc.add(OpenedProjectsEvent.add(path: path));
     Navigator.of(context).push(ProjectPage.route(path));
+  }
+
+  void _handleDeleteOpenedProject(OpenedProjectEntry project) {
+    context.openedProjectsBloc.add(OpenedProjectsEvent.remove(entry: project));
   }
 
   @override
@@ -68,7 +75,10 @@ class _HomeBodyState extends State<HomeBody> {
                   Expanded(
                     flex: 2,
                     // TODO: Limit the width of the project list
-                    child: OpenedProjectsList(onSelect: _handleOpenProject),
+                    child: OpenedProjectsList(
+                      onSelect: _handleOpenProject,
+                      onDelete: _handleDeleteOpenedProject,
+                    ),
                   ),
               ],
             ),

@@ -5,4 +5,5 @@ abstract class AppIcons {
   static const circle = Icons.circle;
   static const upgrade = Icons.upgrade;
   static const arrowRight = Icons.chevron_right;
+  static const remove = Icons.highlight_remove;
 }
