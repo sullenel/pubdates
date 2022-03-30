@@ -12,11 +12,14 @@ class ProjectState with _$ProjectState {
 
   const factory ProjectState.initial() = _InitialProjectState;
 
-  const factory ProjectState.noDependencies() = _NoDependenciesState;
+  const factory ProjectState.noDependencies({
+    required Directory path,
+  }) = _NoDependenciesState;
 
   const factory ProjectState.loading() = _GettingDependenciesState;
 
   const factory ProjectState.gettingUpdates({
+    required Directory path,
     required Project project,
   }) = _GettingDependencyUpdatesState;
 

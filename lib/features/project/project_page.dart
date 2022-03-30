@@ -94,19 +94,32 @@ class _ProjectPageState extends State<ProjectPage> {
 
     if (path != null) {
       context.projectBloc.add(ProjectEvent.select(path: path));
-      // TODO: move to _handleProjectState once state fields are adjusted
-      context.projectsBloc.add(OpenedProjectsEvent.add(path: path));
     }
   }
 
   void _handleProjectState(BuildContext context, ProjectState state) {
     state.mapOrNull(
+      noDependencies: (state) => _addProjectToHistory(state.path),
+      gettingUpdates: (state) => _addProjectToHistory(state.path),
+      failed: (state) {
+        if (state.error.isProjectNotAvailable) {
+          _removeProjectFromHistory(state.path);
+        }
+      },
       loaded: (state) {
         final packages = state.project.dependenciesToBeUpgraded;
         context.read<ScrollManager<Package>>().addAll(packages);
         context.changeLogBloc.add(ChangeLogEvent.loadAll(packages: packages));
       },
     );
+  }
+
+  void _addProjectToHistory(Directory path) {
+    context.projectsBloc.add(OpenedProjectsEvent.add(path: path));
+  }
+
+  void _removeProjectFromHistory(Directory path) {
+    context.projectsBloc.add(OpenedProjectsEvent.remove(path: path));
   }
 
   @override

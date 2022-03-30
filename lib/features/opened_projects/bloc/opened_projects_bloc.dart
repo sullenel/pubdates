@@ -50,7 +50,8 @@ class OpenedProjectsBloc
   ) async {
     return state.mapOrNull<Future<void>>(
       loaded: (state) async {
-        await _projectsRepository.remove(event.entry);
+        final entry = OpenedProjectEntry(path: event.path);
+        await _projectsRepository.remove(entry);
         final entries = await _projectsRepository.allProjects().toList();
         emit(state.copyWith(entries: entries));
       },

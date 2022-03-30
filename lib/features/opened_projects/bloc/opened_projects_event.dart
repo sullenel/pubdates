@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:pubdates/features/opened_projects/models/opened_project_entry.dart';
 
 part 'opened_projects_event.freezed.dart';
 
@@ -19,6 +18,6 @@ class OpenedProjectsEvent with _$OpenedProjectsEvent {
 
   /// Emitted when a project needs to be removed from the list.
   const factory OpenedProjectsEvent.remove({
-    required OpenedProjectEntry entry,
+    required Directory path,
   }) = RemoveOpenedProjectEvent;
 }
