@@ -6,6 +6,8 @@ part 'errors.freezed.dart';
 
 @freezed
 class AppException with _$AppException implements Exception {
+  const AppException._();
+
   /// Thrown when the Dart is not installed.
   const factory AppException.pubNotFound() = PubNotFoundException;
 
@@ -34,4 +36,12 @@ class AppException with _$AppException implements Exception {
     required Object originalError,
     StackTrace? stackTrace,
   }) = UnknownException;
+
+  // Used for detecting whether the selected project can be removed from the
+  // list of opened projects or not.
+  bool get isProjectNotAvailable => maybeMap<bool>(
+        invalidProject: (_) => true,
+        projectNotFound: (_) => true,
+        orElse: () => false,
+      );
 }

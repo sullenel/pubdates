@@ -52,16 +52,15 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
     try {
       // Get packages
       final project = await _projectRepository.getProject(path);
-
       if (project.hasNoDependencies) {
-        return emit(const ProjectState.noDependencies());
+        // Seems it is a redundant state
+        return emit(ProjectState.noDependencies(path: path));
       }
 
-      emit(ProjectState.gettingUpdates(project: project));
-
       // Get package updates
-      final updates = await _getUpdates(path);
+      emit(ProjectState.gettingUpdates(path: path, project: project));
 
+      final updates = await _getUpdates(path);
       if (updates.isEmpty) {
         return emit(ProjectState.noUpdates(project: project));
       }

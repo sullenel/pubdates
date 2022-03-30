@@ -36,13 +36,12 @@ class _HomeBodyState extends State<HomeBody> {
   }
 
   void _handleOpenProject(Directory path) {
-    // TODO: remove this
-    context.openedProjectsBloc.add(OpenedProjectsEvent.add(path: path));
     Navigator.of(context).push(ProjectPage.route(path));
   }
 
   void _handleDeleteOpenedProject(OpenedProjectEntry project) {
-    context.openedProjectsBloc.add(OpenedProjectsEvent.remove(entry: project));
+    context.openedProjectsBloc
+        .add(OpenedProjectsEvent.remove(path: project.path));
   }
 
   @override
