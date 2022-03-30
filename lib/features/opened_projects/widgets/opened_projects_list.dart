@@ -14,9 +14,11 @@ class OpenedProjectsList extends StatelessWidget {
   const OpenedProjectsList({
     Key? key,
     required this.onSelect,
+    required this.onDelete,
   }) : super(key: key);
 
   final ValueSetter<Directory> onSelect;
+  final ValueSetter<OpenedProjectEntry> onDelete;
 
   void _handleSelectProject(OpenedProjectEntry project) {
     onSelect(project.path);
@@ -48,6 +50,7 @@ class OpenedProjectsList extends StatelessWidget {
                     color: Colors.transparent,
                     child: _ProjectList(
                       onSelect: _handleSelectProject,
+                      onDelete: onDelete,
                       entries: entries,
                     ),
                   ),
@@ -66,10 +69,12 @@ class _ProjectList extends StatelessWidget {
     Key? key,
     required this.entries,
     required this.onSelect,
+    this.onDelete,
   }) : super(key: key);
 
   final List<OpenedProjectEntry> entries;
   final ValueSetter<OpenedProjectEntry> onSelect;
+  final ValueSetter<OpenedProjectEntry>? onDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -82,6 +87,7 @@ class _ProjectList extends StatelessWidget {
 
         return OpenedProjectTile(
           onPressed: () => onSelect(entry),
+          onDelete: onDelete == null ? null : () => onDelete!(entry),
           entry: entry,
         );
       },

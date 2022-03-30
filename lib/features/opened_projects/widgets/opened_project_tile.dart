@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pubdates/common/constants/dimensions.dart';
 import 'package:pubdates/common/constants/icons.dart';
 import 'package:pubdates/common/utils/flutter_utils.dart';
+import 'package:pubdates/common/widgets/flip_on_hover.dart';
 import 'package:pubdates/common/widgets/space.dart';
 import 'package:pubdates/features/opened_projects/models/opened_project_entry.dart';
 import 'package:pubdates/features/opened_projects/widgets/project_icon.dart';
@@ -12,14 +13,20 @@ class OpenedProjectTile extends StatelessWidget {
     Key? key,
     required this.entry,
     this.onPressed,
+    this.onDelete,
   }) : super(key: key);
 
   final OpenedProjectEntry entry;
   final VoidCallback? onPressed;
+  final VoidCallback? onDelete;
 
   @override
   Widget build(BuildContext context) {
     final colors = context.colorScheme;
+    final frontIcon = Icon(
+      AppIcons.arrowRight,
+      color: colors.onSecondary.withOpacity(0.5),
+    );
 
     return InkWell(
       onTap: onPressed,
@@ -44,9 +51,18 @@ class OpenedProjectTile extends StatelessWidget {
               ),
             ),
             const HSpace(AppInsets.lg),
-            Icon(
-              AppIcons.arrowRight,
-              color: colors.onSecondary.withOpacity(0.5),
+            FlipOnHover(
+              front: frontIcon,
+              // NOTE: in case we need to (temporarily) disable the delete action
+              back: onDelete == null
+                  ? frontIcon
+                  : GestureDetector(
+                      onTap: onDelete,
+                      child: Icon(
+                        AppIcons.remove,
+                        color: colors.onSecondary.withOpacity(0.5),
+                      ),
+                    ),
             ),
           ],
         ),
