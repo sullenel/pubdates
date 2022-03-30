@@ -27,6 +27,7 @@ dependencies:
   html: ^0.15.0
   flutter_widget_from_html_core: ^0.8.5
   pub_semver: ^2.1.1
+  shared_preferences: ^2.0.13
 
   # Native
   file_selector: ^0.8.3
@@ -34,7 +35,7 @@ dependencies:
   file_selector_windows: ^0.8.2
   file_selector_linux: ^0.0.2
   url_launcher: ^6.0.0
-  scroll_to_index:
+  scroll_to_index: ^2.1.1
 
 dev_dependencies:
   flutter_test:
