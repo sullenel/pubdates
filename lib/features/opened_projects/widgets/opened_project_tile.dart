@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:pubdates/common/constants/dimensions.dart';
 import 'package:pubdates/common/constants/icons.dart';
 import 'package:pubdates/common/utils/flutter_utils.dart';
+import 'package:pubdates/common/widgets/custom_list_tile.dart';
 import 'package:pubdates/common/widgets/flip_on_hover.dart';
 import 'package:pubdates/common/widgets/space.dart';
 import 'package:pubdates/features/opened_projects/models/opened_project_entry.dart';
 import 'package:pubdates/features/opened_projects/widgets/project_icon.dart';
 
-// TODO: extract a reusable widget since its code is similar to ProjectDependencyTile
 class OpenedProjectTile extends StatelessWidget {
   const OpenedProjectTile({
     Key? key,
@@ -28,44 +28,27 @@ class OpenedProjectTile extends StatelessWidget {
       color: colors.onSecondary.withOpacity(0.5),
     );
 
-    return InkWell(
-      onTap: onPressed,
-      borderRadius: AppBorders.button,
-      child: Ink(
-        decoration: BoxDecoration(
-          borderRadius: AppBorders.button,
-          color: Colors.black.withOpacity(0.2),
-        ),
-        padding: const EdgeInsets.symmetric(
-          vertical: AppInsets.md,
-          horizontal: AppInsets.lg,
-        ),
-        child: Row(
-          children: [
-            ProjectIcon(entry: entry),
-            const HSpace(AppInsets.lg),
-            Expanded(
-              child: _ProjectInfoSection(
-                title: entry.name,
-                subtitle: entry.fullPath,
+    return CustomListTile(
+      onPressed: onPressed,
+      // FIXME: get the color from the theme
+      backgroundColor: Colors.black.withOpacity(0.2),
+      leading: ProjectIcon(entry: entry),
+      trailing: FlipOnHover(
+        front: frontIcon,
+        // NOTE: in case we need to (temporarily) disable the delete action
+        back: onDelete == null
+            ? frontIcon
+            : GestureDetector(
+                onTap: onDelete,
+                child: Icon(
+                  AppIcons.remove,
+                  color: colors.onSecondary.withOpacity(0.5),
+                ),
               ),
-            ),
-            const HSpace(AppInsets.lg),
-            FlipOnHover(
-              front: frontIcon,
-              // NOTE: in case we need to (temporarily) disable the delete action
-              back: onDelete == null
-                  ? frontIcon
-                  : GestureDetector(
-                      onTap: onDelete,
-                      child: Icon(
-                        AppIcons.remove,
-                        color: colors.onSecondary.withOpacity(0.5),
-                      ),
-                    ),
-            ),
-          ],
-        ),
+      ),
+      child: _ProjectInfoSection(
+        title: entry.name,
+        subtitle: entry.fullPath,
       ),
     );
   }
