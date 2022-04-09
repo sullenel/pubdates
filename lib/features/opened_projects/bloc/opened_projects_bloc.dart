@@ -2,7 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart' as transformers;
 import 'package:pubdates/features/opened_projects/bloc/opened_projects_event.dart';
 import 'package:pubdates/features/opened_projects/bloc/opened_projects_state.dart';
-import 'package:pubdates/features/opened_projects/models/opened_project_entry.dart';
 import 'package:pubdates/features/opened_projects/repositories/open_projects_repository.dart';
 export 'package:pubdates/features/opened_projects/bloc/opened_projects_event.dart';
 export 'package:pubdates/features/opened_projects/bloc/opened_projects_state.dart';
@@ -31,13 +30,9 @@ class OpenedProjectsBloc
   ) async {
     return state.mapOrNull<Future<void>>(
       loaded: (state) async {
-        final newEntry = OpenedProjectEntry(path: event.path);
+        if (state.contains(event.path)) return;
 
-        if (state.entries.contains(newEntry)) {
-          return;
-        }
-
-        await _projectsRepository.add(newEntry);
+        await _projectsRepository.add(event.path);
         final entries = await _projectsRepository.allProjects().toList();
         emit(state.copyWith(entries: entries));
       },
@@ -50,8 +45,7 @@ class OpenedProjectsBloc
   ) async {
     return state.mapOrNull<Future<void>>(
       loaded: (state) async {
-        final entry = OpenedProjectEntry(path: event.path);
-        await _projectsRepository.remove(entry);
+        await _projectsRepository.remove(event.path);
         final entries = await _projectsRepository.allProjects().toList();
         emit(state.copyWith(entries: entries));
       },

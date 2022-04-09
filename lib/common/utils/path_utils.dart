@@ -10,3 +10,7 @@ class PathPicker {
     return path == null ? null : Directory(path);
   }
 }
+
+extension DirectoryExtension on Directory {
+  String get fullPath => absolute.path;
+}
