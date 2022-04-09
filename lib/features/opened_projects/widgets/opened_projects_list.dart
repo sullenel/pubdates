@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pubdates/common/constants/dimensions.dart';
+import 'package:pubdates/common/widgets/limited_width.dart';
 import 'package:pubdates/common/widgets/space.dart';
 import 'package:pubdates/features/opened_projects/bloc/opened_projects_bloc.dart';
 import 'package:pubdates/features/opened_projects/models/opened_project_entry.dart';
@@ -15,10 +16,12 @@ class OpenedProjectsList extends StatelessWidget {
     Key? key,
     required this.onSelect,
     required this.onDelete,
+    this.maxWidth = 600,
   }) : super(key: key);
 
   final ValueSetter<Directory> onSelect;
   final ValueSetter<OpenedProjectEntry> onDelete;
+  final double maxWidth;
 
   void _handleSelectProject(OpenedProjectEntry project) {
     onSelect(project.path);
@@ -36,13 +39,18 @@ class OpenedProjectsList extends StatelessWidget {
               return Nothing;
             }
 
+            // NOTE: don't limit the width of the entire column, or else the
+            // scrollbar of the listview will end up in the center.
             return Column(
               children: [
                 Padding(
                   padding: const EdgeInsets.all(AppInsets.lg) -
                       const EdgeInsets.only(bottom: AppInsets.lg),
-                  child: SectionTitle(
-                    title: AppLocalizations.of(context).recent,
+                  child: LimitedWidth(
+                    maxWidth: maxWidth,
+                    child: SectionTitle(
+                      title: AppLocalizations.of(context).recent,
+                    ),
                   ),
                 ),
                 Expanded(
@@ -52,6 +60,7 @@ class OpenedProjectsList extends StatelessWidget {
                       onSelect: _handleSelectProject,
                       onDelete: onDelete,
                       entries: entries,
+                      maxWidth: maxWidth,
                     ),
                   ),
                 ),
@@ -70,11 +79,13 @@ class _ProjectList extends StatelessWidget {
     required this.entries,
     required this.onSelect,
     this.onDelete,
+    this.maxWidth = double.infinity,
   }) : super(key: key);
 
   final List<OpenedProjectEntry> entries;
   final ValueSetter<OpenedProjectEntry> onSelect;
   final ValueSetter<OpenedProjectEntry>? onDelete;
+  final double maxWidth;
 
   @override
   Widget build(BuildContext context) {
@@ -85,10 +96,13 @@ class _ProjectList extends StatelessWidget {
       itemBuilder: (context, index) {
         final entry = entries[index];
 
-        return OpenedProjectTile(
-          onPressed: () => onSelect(entry),
-          onDelete: onDelete == null ? null : () => onDelete!(entry),
-          entry: entry,
+        return LimitedWidth(
+          maxWidth: maxWidth,
+          child: OpenedProjectTile(
+            onPressed: () => onSelect(entry),
+            onDelete: onDelete == null ? null : () => onDelete!(entry),
+            entry: entry,
+          ),
         );
       },
     );
