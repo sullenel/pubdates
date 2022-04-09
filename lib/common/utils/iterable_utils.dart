@@ -7,3 +7,7 @@ extension ListExtension<E> on List<E> {
     return length <= count ? this : skip(length - count).toList();
   }
 }
+
+extension IterableExtension<E> on Iterable<E> {
+  List<E> toFixedList() => toList(growable: false);
+}

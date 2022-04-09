@@ -5,7 +5,7 @@ import 'package:pubdates/features/opened_projects/models/opened_project_entry.da
 import 'package:pubdates/localization/app_localizations.dart';
 
 extension on OpenedProjectEntry {
-  File get iconFile => File(iconPath);
+  File get iconFile => File(iconPath!);
 }
 
 class ProjectIcon extends StatelessWidget {
@@ -20,6 +20,10 @@ class ProjectIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (entry.iconPath == null) {
+      return FlutterLogo(size: size);
+    }
+
     return Image.file(
       entry.iconFile,
       width: size,

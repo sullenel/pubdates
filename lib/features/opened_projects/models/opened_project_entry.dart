@@ -11,21 +11,10 @@ class OpenedProjectEntry with _$OpenedProjectEntry {
 
   const factory OpenedProjectEntry({
     required Directory path,
+    String? iconPath,
   }) = _OpenedProjectEntry;
 
   String get fullPath => path.absolute.path;
-
-  // FIXME: find a more reliable way to get the project icon
-  String get iconPath => join(
-        fullPath,
-        'android',
-        'app',
-        'src',
-        'main',
-        'res',
-        'mipmap-mdpi',
-        'ic_launcher.png',
-      );
 
   String get name => basename(fullPath);
 
