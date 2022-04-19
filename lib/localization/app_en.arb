@@ -82,5 +82,12 @@
     }
   },
   "projectLogoTooltip": "Project logo",
-  "recent": "Recent"
+  "recent": "Recent",
+  "sortPackagesTooltip": "Sort packages",
+  "packageSortingName": "{sorting, select, byName{Alphabetical}, byUpdateAvailability{Updates first}}",
+  "@packageSortingName": {
+    "placeholders": {
+      "sorting": {}
+    }
+  }
 }

@@ -13,11 +13,11 @@ import 'package:pubdates/features/changelog/bloc/changelog_event.dart';
 import 'package:pubdates/features/changelog/repositories/changelog_repository.dart';
 import 'package:pubdates/features/changelog/services/changelog_parser.dart';
 import 'package:pubdates/features/changelog/services/changelog_provider.dart';
+import 'package:pubdates/features/changelog/widgets/changelog_list.dart';
 import 'package:pubdates/features/opened_projects/bloc/opened_projects_bloc.dart';
 import 'package:pubdates/features/project/bloc/project_bloc.dart';
 import 'package:pubdates/features/project/bloc/project_event.dart';
 import 'package:pubdates/features/project/bloc/project_state.dart';
-import 'package:pubdates/features/changelog/widgets/changelog_list.dart';
 import 'package:pubdates/features/project/models/package.dart';
 import 'package:pubdates/features/project/widgets/invalid_project.dart';
 import 'package:pubdates/features/project/widgets/project_no_dependencies.dart';
@@ -99,6 +99,10 @@ class _ProjectPageState extends State<ProjectPage> {
 
   void _handleProjectState(BuildContext context, ProjectState state) {
     state.mapOrNull(
+      // NOTE: no need for reordering changelogs when (re)sorting packages
+      // since the changelog view only shows packages with new version which are
+      // already in proper order.
+
       noDependencies: (state) => _addProjectToHistory(state.path),
       gettingUpdates: (state) => _addProjectToHistory(state.path),
       failed: (state) {
@@ -147,6 +151,10 @@ class _ProjectPageState extends State<ProjectPage> {
                 noUpdates: (state) => ProjectContent(
                   project: state.project,
                   child: const ProjectNoUpdates(),
+                ),
+                sorted: (state) => ProjectContent(
+                  project: state.project,
+                  child: const ChangeLogList(),
                 ),
                 loaded: (state) => ProjectContent(
                   project: state.project,

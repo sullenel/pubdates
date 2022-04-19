@@ -3,10 +3,13 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart' as transformers;
 import 'package:pubdates/common/models/errors.dart';
+import 'package:pubdates/common/utils/conversion_utils.dart';
 import 'package:pubdates/features/project/bloc/project_event.dart';
 import 'package:pubdates/features/project/bloc/project_state.dart';
 import 'package:pubdates/features/project/models/package.dart';
+import 'package:pubdates/features/project/models/package_sorting.dart';
 import 'package:pubdates/features/project/models/package_update.dart';
+import 'package:pubdates/features/project/models/project.dart';
 import 'package:pubdates/features/project/repositories/project_repository.dart';
 
 // Flow:
@@ -23,8 +26,9 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
   })  : _projectRepository = projectRepository,
         super(const ProjectState.initial()) {
     on<ProjectEvent>(
-      (event, emit) => event.map(
+      (event, emit) => event.map<Future<void>>(
         select: (event) => _handleProjectSelected(event, emit),
+        sort: (event) => _handleSort(event, emit),
       ),
       transformer: transformers.sequential(),
     );
@@ -65,6 +69,7 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
         return emit(ProjectState.noUpdates(project: project));
       }
 
+      // FIXME: move to an extension method
       final dependencies = project.dependencies.mapUpdates(updates);
       final devDependencies = project.devDependencies.mapUpdates(updates);
       final updatedProject = project.copyWith(
@@ -77,8 +82,8 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
       }
 
       emit(ProjectState.loaded(project: updatedProject));
-    } on AppException catch (error) {
-      emit(ProjectState.failed(error: error, path: path));
+    } on AppException catch (error, trace) {
+      emit(ProjectState.failed(error: error, path: path, stackTrace: trace));
       rethrow;
     }
   }
@@ -88,6 +93,23 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
       _projectRepository
           .getPackageUpdates(path)
           .fold({}, (result, it) => result..putIfAbsent(it.name, () => it));
+
+  Future<void> _handleSort(
+    SortProjectsEvent event,
+    Emitter<ProjectState> emit,
+  ) async {
+    return state.mapOrNull<void>(
+      loaded: (state) {
+        final updatedProject =
+            state.project.withDependenciesSortedBy(sorting: event.sorting);
+
+        // Stupid bloc not allowing duplicate states:
+        // state.project == updatedProject (yep)
+        emit(ProjectState.sorted(project: updatedProject));
+        emit(state.copyWith(project: updatedProject));
+      },
+    );
+  }
 }
 
 extension on Iterable<Package> {
@@ -98,4 +120,40 @@ extension on Iterable<Package> {
           else
             pkg
       ];
+}
+
+extension on Project {
+  Project withDependenciesSortedBy({
+    PackageSorting sorting = PackageSorting.byName,
+  }) {
+    switch (sorting) {
+      case PackageSorting.byName:
+        return _withDependenciesSortedByName;
+      case PackageSorting.byUpdateAvailability:
+        return _withDependenciesSortedByUpdateAvailability;
+    }
+  }
+
+  Project get _withDependenciesSortedByName => copyWith(
+        dependencies: dependencies.sortedByName,
+        devDependencies: devDependencies.sortedByName,
+      );
+
+  Project get _withDependenciesSortedByUpdateAvailability => copyWith(
+        dependencies: dependencies.sortedByUpdateAvailability,
+        devDependencies: devDependencies.sortedByUpdateAvailability,
+      );
+}
+
+extension on List<Package> {
+  List<Package> get sortedByName {
+    return toList()..sort((a, b) => a.name.compareTo(b.name));
+  }
+
+  List<Package> get sortedByUpdateAvailability {
+    return toList()
+      ..sort(
+        (a, b) => b.canBeUpgraded.toInt().compareTo(a.canBeUpgraded.toInt()),
+      );
+  }
 }

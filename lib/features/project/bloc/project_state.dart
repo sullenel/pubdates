@@ -31,12 +31,18 @@ class ProjectState with _$ProjectState {
     required Project project,
   }) = _ProjectLoadedState;
 
+  // A temporary state mostly for informing interested parties.
+  const factory ProjectState.sorted({
+    required Project project,
+  }) = _ProjectSortedState;
+
   // Emitted when the provided path does not have the pubspec.yaml and
   // pubspec.lock files. The pubspec.lock is required since without it the app
   // is meaningless.
   const factory ProjectState.failed({
     required AppException error,
     required Directory path,
+    StackTrace? stackTrace,
   }) = _FailedProjectState;
 
   String? get projectName => mapOrNull(

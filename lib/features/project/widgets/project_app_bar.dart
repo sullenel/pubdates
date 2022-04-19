@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pubdates/common/widgets/space.dart';
 import 'package:pubdates/features/project/bloc/project_bloc.dart';
 import 'package:pubdates/features/project/bloc/project_state.dart';
+import 'package:pubdates/features/project/widgets/sort_packages_action.dart';
 
 class ProjectAppBar extends StatelessWidget implements PreferredSizeWidget {
   const ProjectAppBar({
@@ -23,6 +24,7 @@ class ProjectAppBar extends StatelessWidget implements PreferredSizeWidget {
         builder: (context, name) => name == null ? Nothing : Text(name),
       ),
       actions: [
+        const SortPackagesAction(),
         if (withCloseAction) const CloseButton(),
       ],
     );
