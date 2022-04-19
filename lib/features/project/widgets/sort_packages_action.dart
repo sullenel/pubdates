@@ -6,6 +6,11 @@ import 'package:pubdates/features/project/bloc/project_event.dart';
 import 'package:pubdates/features/project/models/package_sorting.dart';
 import 'package:pubdates/localization/app_localizations.dart';
 
+extension on BuildContext {
+  bool get canSortPackages =>
+      select<ProjectBloc, bool>((bloc) => bloc.state.canSortPackages);
+}
+
 class SortPackagesAction extends StatelessWidget {
   const SortPackagesAction({
     Key? key,
@@ -20,6 +25,7 @@ class SortPackagesAction extends StatelessWidget {
 
     // TODO: read the initial/current value from settings bloc once implemented
     return PopupMenuButton<PackageSorting>(
+      enabled: context.canSortPackages,
       onSelected: (option) {
         context.read<ProjectBloc>().add(ProjectEvent.sort(sorting: option));
       },

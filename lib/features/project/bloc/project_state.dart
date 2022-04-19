@@ -50,4 +50,9 @@ class ProjectState with _$ProjectState {
         noUpdates: (state) => state.project.name,
         loaded: (state) => state.project.name,
       );
+
+  bool get canSortPackages => maybeMap<bool>(
+        loaded: (_) => true,
+        orElse: () => false,
+      );
 }
