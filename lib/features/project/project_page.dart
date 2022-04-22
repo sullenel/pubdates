@@ -27,9 +27,7 @@ import 'package:pubdates/features/project/widgets/project_content.dart';
 
 extension on BuildContext {
   ProjectBloc get projectBloc => this.read();
-
   ChangeLogBloc get changeLogBloc => this.read();
-
   OpenedProjectsBloc get projectsBloc => this.read();
 }
 

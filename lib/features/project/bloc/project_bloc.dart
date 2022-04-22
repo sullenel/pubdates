@@ -12,6 +12,9 @@ import 'package:pubdates/features/project/models/package_update.dart';
 import 'package:pubdates/features/project/models/project.dart';
 import 'package:pubdates/features/project/repositories/project_repository.dart';
 
+export 'package:pubdates/features/project/bloc/project_event.dart';
+export 'package:pubdates/features/project/bloc/project_state.dart';
+
 // Flow:
 // Once a path to a Dart project is provided, check if it is actually a Dart
 // project and whether it contains the pubspec.lock file. Throw an error if not.

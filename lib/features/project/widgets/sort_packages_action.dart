@@ -2,13 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pubdates/common/constants/icons.dart';
 import 'package:pubdates/features/project/bloc/project_bloc.dart';
-import 'package:pubdates/features/project/bloc/project_event.dart';
 import 'package:pubdates/features/project/models/package_sorting.dart';
+import 'package:pubdates/features/settings/bloc/settings_bloc.dart';
 import 'package:pubdates/localization/app_localizations.dart';
 
 extension on BuildContext {
-  bool get canSortPackages =>
-      select<ProjectBloc, bool>((bloc) => bloc.state.canSortPackages);
+  bool get canSortPackages {
+    return select<ProjectBloc, bool>((bloc) => bloc.state.canSortPackages);
+  }
+
+  PackageSorting get currentPackageSorting {
+    return select<SettingsBloc, PackageSorting>(
+      (bloc) => bloc.state.settings.packageSorting,
+    );
+  }
+
+  void changePackageSorting(PackageSorting sorting) {
+    read<SettingsBloc>().add(SettingsEvent.setPackageSorting(sorting: sorting));
+  }
 }
 
 class SortPackagesAction extends StatelessWidget {
@@ -23,12 +34,10 @@ class SortPackagesAction extends StatelessWidget {
   Widget build(BuildContext context) {
     late final t = AppLocalizations.of(context);
 
-    // TODO: read the initial/current value from settings bloc once implemented
     return PopupMenuButton<PackageSorting>(
+      onSelected: context.changePackageSorting,
       enabled: context.canSortPackages,
-      onSelected: (option) {
-        context.read<ProjectBloc>().add(ProjectEvent.sort(sorting: option));
-      },
+      initialValue: context.currentPackageSorting,
       icon: const Icon(AppIcons.sort),
       tooltip: t.sortPackagesTooltip,
       itemBuilder: (context) => [
