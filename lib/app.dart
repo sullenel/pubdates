@@ -12,6 +12,8 @@ import 'package:pubdates/features/opened_projects/repositories/open_projects_rep
 import 'package:pubdates/features/project/repositories/project_repository.dart';
 import 'package:pubdates/features/project/services/pubspec_reader.dart';
 import 'package:pubdates/features/project/services/package_service.dart';
+import 'package:pubdates/features/settings/bloc/settings_bloc.dart';
+import 'package:pubdates/features/settings/repositories/settings_repository.dart';
 import 'package:pubdates/localization/app_localizations.dart';
 
 class App extends StatelessWidget {
@@ -26,6 +28,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
       providers: [
+        RepositoryProvider<KeyValueStore>.value(value: storage),
         RepositoryProvider<UrlOpener>(
           create: (_) => const UrlOpener(),
         ),
@@ -44,15 +47,25 @@ class App extends StatelessWidget {
             packageUpdater: context.read(),
           ),
         ),
-        RepositoryProvider(
+        RepositoryProvider<OpenProjectsRepository>(
           create: (context) => OpenProjectsRepository(
             maxSavedCount: AppConstants.maxOpenedProjectsCount,
-            storage: storage,
+            storage: context.read(),
+          ),
+        ),
+        RepositoryProvider<SettingsRepository>(
+          create: (context) => SettingsRepository(
+            storage: context.read(),
           ),
         ),
       ],
       child: MultiBlocProvider(
         providers: [
+          BlocProvider<SettingsBloc>(
+            create: (context) => SettingsBloc(
+              settingsRepository: context.read(),
+            )..add(const SettingsEvent.restore()),
+          ),
           BlocProvider<OpenedProjectsBloc>(
             create: (context) => OpenedProjectsBloc(
               projectsRepository: context.read(),
