@@ -7,4 +7,5 @@ mixin AppIcons {
   static const arrowRight = Icons.chevron_right;
   static const remove = Icons.highlight_remove;
   static const sort = Icons.sort;
+  static const settings = Icons.settings;
 }

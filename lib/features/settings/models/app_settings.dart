@@ -16,6 +16,6 @@ class AppSettings with _$AppSettings {
   const factory AppSettings({
     @Default(PackageSorting.byName) PackageSorting packageSorting,
     @Default(ThemeMode.system) ThemeMode themeMode,
-    String? dartPath,
+    String? sdkPath,
   }) = _AppSettings;
 }

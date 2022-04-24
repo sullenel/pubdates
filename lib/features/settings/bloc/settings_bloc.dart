@@ -16,7 +16,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       (event, emit) => event.map(
         restore: (event) => _handleRestoreSettings(event, emit),
         setPackageSorting: (event) => _handleSetPackageSorting(event, emit),
-        setPubPath: (event) => _handlePubPath(event, emit),
+        setSdkPath: (event) => _handleSdkPath(event, emit),
         setThemeMode: (event) => _handleSetThemeMode(event, emit),
       ),
       transformer: transformers.sequential(),
@@ -45,13 +45,13 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     }
   }
 
-  Future<void> _handlePubPath(
-    SetPubPathEvent event,
+  Future<void> _handleSdkPath(
+    SetSdkPathEvent event,
     Emitter<SettingsState> emit,
   ) async {
-    if (state.settings.dartPath != event.path) {
-      await _settingsRepository.savePubPath(event.path);
-      final newSettings = state.settings.copyWith(dartPath: event.path);
+    if (state.settings.sdkPath != event.path) {
+      await _settingsRepository.saveSdkPath(event.path);
+      final newSettings = state.settings.copyWith(sdkPath: event.path);
       emit(state.copyWith(settings: newSettings));
     }
   }

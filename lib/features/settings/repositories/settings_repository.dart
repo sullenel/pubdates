@@ -7,7 +7,7 @@ class SettingsRepository {
   static String get _prefix => 'settings';
   static String get _sortingKey => '$_prefix.sorting';
   static String get _themeKey => '$_prefix.theme';
-  static String get _pubPathKey => '$_prefix.pub_path';
+  static String get _sdkPathKey => '$_prefix.sdk_path';
 
   const SettingsRepository({
     required KeyValueStore storage,
@@ -22,7 +22,7 @@ class SettingsRepository {
     return AppSettings(
       packageSorting: await packageSorting,
       themeMode: await themeMode,
-      dartPath: await pubPath,
+      sdkPath: await sdkPath,
     );
   }
 
@@ -46,12 +46,15 @@ class SettingsRepository {
     return name == null ? _defaults.themeMode : ThemeMode.values.byName(name);
   }
 
-  Future<void> savePubPath(String path) {
-    assert(path.isNotEmpty, 'The path cannot be empty');
-    return _storage.putString(_pubPathKey, path);
+  Future<void> saveSdkPath(String? path) {
+    if (path == null) {
+      return _storage.delete(_sdkPathKey);
+    }
+
+    return _storage.putString(_sdkPathKey, path);
   }
 
-  Future<String?> get pubPath {
-    return _storage.getString(_pubPathKey);
+  Future<String?> get sdkPath {
+    return _storage.getString(_sdkPathKey);
   }
 }

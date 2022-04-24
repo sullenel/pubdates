@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 extension ColorExtension on Color {
@@ -17,4 +18,17 @@ extension BuildContextExtension on BuildContext {
   TextTheme get textTheme => theme.textTheme;
 
   ColorScheme get colorScheme => theme.colorScheme;
+}
+
+extension WidgetExtension on Widget {
+  Future<T?> asDialog<T>(
+    BuildContext context, {
+    bool dismissible = true,
+  }) {
+    return showCupertinoDialog<T?>(
+      context: context,
+      barrierDismissible: dismissible,
+      builder: (_) => this,
+    );
+  }
 }

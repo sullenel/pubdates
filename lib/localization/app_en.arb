@@ -89,5 +89,17 @@
     "placeholders": {
       "sorting": {}
     }
+  },
+  "settingsTitle": "Settings",
+  "sdkPathOption": "Dart/Flutter SDK path",
+  "sdkPathOptionDescription": "In case the path cannot be automatically detected",
+  "unsetAction": "Unset",
+  "packageSortingOption": "Package sorting",
+  "themeOption": "Theme mode",
+  "themeModeName": "{mode, select, system{System}, light{Light}, dark{Dark}}",
+  "@themeModeName": {
+    "placeholders": {
+      "mode": {}
+    }
   }
 }

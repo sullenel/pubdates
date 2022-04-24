@@ -18,7 +18,7 @@ class SettingsEvent with _$SettingsEvent {
     required ThemeMode themeMode,
   }) = SetThemeModeEvent;
 
-  const factory SettingsEvent.setPubPath({
-    required String path,
-  }) = SetPubPathEvent;
+  const factory SettingsEvent.setSdkPath({
+    String? path,
+  }) = SetSdkPathEvent;
 }
