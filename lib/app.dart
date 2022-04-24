@@ -72,25 +72,30 @@ class App extends StatelessWidget {
             )..add(const OpenedProjectsEvent.loadAll()),
           ),
         ],
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          restorationScopeId: 'app',
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [
-            Locale('en', ''),
-          ],
-          onGenerateTitle: (BuildContext context) =>
-              AppLocalizations.of(context).appTitle,
-          theme: lightTheme,
-          darkTheme: darkTheme,
-          themeMode: ThemeMode.system,
-          onGenerateRoute: (RouteSettings routeSettings) {
-            return MaterialPageRoute(builder: (_) => const HomePage());
+        child: BlocSelector<SettingsBloc, SettingsState, ThemeMode>(
+          selector: (state) => state.settings.themeMode,
+          builder: (context, themeMode) {
+            return MaterialApp(
+              debugShowCheckedModeBanner: false,
+              restorationScopeId: 'app',
+              localizationsDelegates: const [
+                AppLocalizations.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              supportedLocales: const [
+                Locale('en', ''),
+              ],
+              onGenerateTitle: (BuildContext context) =>
+                  AppLocalizations.of(context).appTitle,
+              theme: lightTheme,
+              darkTheme: darkTheme,
+              themeMode: themeMode,
+              onGenerateRoute: (RouteSettings routeSettings) {
+                return MaterialPageRoute(builder: (_) => const HomePage());
+              },
+            );
           },
         ),
       ),
