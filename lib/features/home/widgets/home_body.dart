@@ -11,6 +11,7 @@ import 'package:pubdates/features/opened_projects/bloc/opened_projects_bloc.dart
 import 'package:pubdates/features/opened_projects/models/opened_project_entry.dart';
 import 'package:pubdates/features/opened_projects/widgets/opened_projects_list.dart';
 import 'package:pubdates/features/project/project_page.dart';
+import 'package:pubdates/features/settings/widgets/settings_dialog.dart';
 
 extension on BuildContext {
   bool get hasOpenedProjects =>
@@ -44,6 +45,10 @@ class _HomeBodyState extends State<HomeBody> {
         .add(OpenedProjectsEvent.remove(path: project.path));
   }
 
+  void _handleOpenSettings() {
+    const SettingsDialog().asDialog(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     final colors = context.colorScheme;
@@ -53,6 +58,7 @@ class _HomeBodyState extends State<HomeBody> {
     return CallbackShortcuts(
       bindings: {
         AppShortcuts.open: _handleSelectProject,
+        AppShortcuts.settings: _handleOpenSettings,
       },
       child: Focus(
         autofocus: true,
