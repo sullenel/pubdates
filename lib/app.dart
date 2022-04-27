@@ -35,11 +35,18 @@ class App extends StatelessWidget {
         RepositoryProvider<PathPicker>(
           create: (_) => const PathPicker(),
         ),
+        RepositoryProvider<SettingsRepository>(
+          create: (context) => SettingsRepository(
+            storage: context.read(),
+          ),
+        ),
         RepositoryProvider<PubspecReader>(
           create: (context) => const DefaultPubspecReader(),
         ),
         RepositoryProvider<PackageService>(
-          create: (context) => const DefaultPackageService(),
+          create: (context) => DefaultPackageService(
+            sdkSettings: context.read<SettingsRepository>(),
+          ),
         ),
         RepositoryProvider<ProjectRepository>(
           create: (context) => DefaultProjectRepository(
@@ -50,11 +57,6 @@ class App extends StatelessWidget {
         RepositoryProvider<OpenProjectsRepository>(
           create: (context) => OpenProjectsRepository(
             maxSavedCount: AppConstants.maxOpenedProjectsCount,
-            storage: context.read(),
-          ),
-        ),
-        RepositoryProvider<SettingsRepository>(
-          create: (context) => SettingsRepository(
             storage: context.read(),
           ),
         ),

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:pubdates/common/persistence/key_value_store.dart';
 import 'package:pubdates/features/project/models/package_sorting.dart';
+import 'package:pubdates/features/project/services/package_service.dart';
 import 'package:pubdates/features/settings/models/app_settings.dart';
 
-class SettingsRepository {
+class SettingsRepository implements SdkSettingsProvider {
   static String get _prefix => 'settings';
   static String get _sortingKey => '$_prefix.sorting';
   static String get _themeKey => '$_prefix.theme';
@@ -54,6 +55,7 @@ class SettingsRepository {
     return _storage.putString(_sdkPathKey, path);
   }
 
+  @override
   Future<String?> get sdkPath {
     return _storage.getString(_sdkPathKey);
   }
