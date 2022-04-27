@@ -57,6 +57,12 @@ ThemeData get lightTheme {
     backgroundColor: colorScheme.surface,
   );
 
+  final outlinedButtonTheme = OutlinedButtonThemeData(
+    style: ButtonStyle(
+      foregroundColor: MaterialStateProperty.all(colorScheme.onPrimary),
+    ),
+  );
+
   return ThemeData(
     fontFamily: 'Roboto',
     useMaterial3: true,
@@ -71,6 +77,7 @@ ThemeData get lightTheme {
     textButtonTheme: textButtonTheme,
     scaffoldBackgroundColor: colorScheme.background,
     dialogTheme: dialogTheme,
+    outlinedButtonTheme: outlinedButtonTheme,
   );
 }
 

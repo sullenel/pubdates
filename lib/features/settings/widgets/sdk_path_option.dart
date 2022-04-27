@@ -21,6 +21,7 @@ class _SdkPathOption extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    late final colors = context.colorScheme;
     final t = AppLocalizations.of(context);
     final path = context.select<SettingsBloc, String?>(
       (bloc) => bloc.state.settings.sdkPath,
@@ -32,6 +33,7 @@ class _SdkPathOption extends StatelessWidget {
       subtitle: hasSdkPath ? Text(path) : Text(t.sdkPathOptionDescription),
       trailing: hasSdkPath
           ? OutlinedButton(
+              style: OutlinedButton.styleFrom(primary: colors.error),
               onPressed: context.unsetSdkPath,
               child: Text(t.unsetAction),
             )
