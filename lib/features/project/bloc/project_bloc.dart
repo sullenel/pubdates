@@ -76,14 +76,7 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
         return emit(ProjectState.noUpdates(project: project));
       }
 
-      // FIXME: move to an extension method
-      final dependencies = project.dependencies.mapUpdates(updates);
-      final devDependencies = project.devDependencies.mapUpdates(updates);
-      final updatedProject = project.copyWith(
-        dependencies: dependencies,
-        devDependencies: devDependencies,
-      );
-
+      final updatedProject = project.populateWithUpdates(updates);
       if (!updatedProject.hasDependenciesToBeUpgraded) {
         return emit(ProjectState.noUpdates(project: updatedProject));
       }
@@ -133,6 +126,13 @@ extension on Iterable<Package> {
 }
 
 extension on Project {
+  Project populateWithUpdates(Map<String, PackageUpdate> updates) {
+    return copyWith(
+      dependencies: dependencies.mapUpdates(updates),
+      devDependencies: devDependencies.mapUpdates(updates),
+    );
+  }
+
   Project withDependenciesSortedBy({
     PackageSorting sorting = PackageSorting.byName,
   }) {
