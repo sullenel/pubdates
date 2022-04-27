@@ -157,13 +157,30 @@ extension on Project {
 
 extension on List<Package> {
   List<Package> get sortedByName {
-    return toList()..sort((a, b) => a.name.compareTo(b.name));
+    return toList()..sort((a, b) => a.compareByName(b));
   }
 
   List<Package> get sortedByUpdateAvailability {
     return toList()
       ..sort(
-        (a, b) => b.canBeUpgraded.toInt().compareTo(a.canBeUpgraded.toInt()),
+        (a, b) {
+          // Both packages have new versions that's
+          if (a.canBeUpgraded == b.canBeUpgraded) {
+            return a.compareByName(b);
+          } else {
+            return a.compareByUpdateAvailability(b);
+          }
+        },
       );
+  }
+}
+
+extension on Package {
+  int compareByName(Package other) {
+    return name.compareTo(other.name);
+  }
+
+  int compareByUpdateAvailability(Package other) {
+    return other.canBeUpgraded.toInt().compareTo(canBeUpgraded.toInt());
   }
 }
