@@ -38,7 +38,7 @@ ThemeData get lightTheme {
     color: Colors.black12,
   );
 
-  const scrollBarTheme = const ScrollbarThemeData();
+  const scrollBarTheme = ScrollbarThemeData();
 
   final progressIndicatorTheme = ProgressIndicatorThemeData(
     linearMinHeight: 4,
@@ -50,6 +50,16 @@ ThemeData get lightTheme {
   final textButtonTheme = TextButtonThemeData(
     style: ButtonStyle(
       backgroundColor: MaterialStateProperty.all(colorScheme.secondary),
+    ),
+  );
+
+  final dialogTheme = DialogTheme(
+    backgroundColor: colorScheme.surface,
+  );
+
+  final outlinedButtonTheme = OutlinedButtonThemeData(
+    style: ButtonStyle(
+      foregroundColor: MaterialStateProperty.all(colorScheme.onPrimary),
     ),
   );
 
@@ -65,6 +75,9 @@ ThemeData get lightTheme {
     highlightColor: Colors.black12,
     progressIndicatorTheme: progressIndicatorTheme,
     textButtonTheme: textButtonTheme,
+    scaffoldBackgroundColor: colorScheme.background,
+    dialogTheme: dialogTheme,
+    outlinedButtonTheme: outlinedButtonTheme,
   );
 }
 

@@ -12,6 +12,8 @@ import 'package:pubdates/features/opened_projects/repositories/open_projects_rep
 import 'package:pubdates/features/project/repositories/project_repository.dart';
 import 'package:pubdates/features/project/services/pubspec_reader.dart';
 import 'package:pubdates/features/project/services/package_service.dart';
+import 'package:pubdates/features/settings/bloc/settings_bloc.dart';
+import 'package:pubdates/features/settings/repositories/settings_repository.dart';
 import 'package:pubdates/localization/app_localizations.dart';
 
 class App extends StatelessWidget {
@@ -26,17 +28,25 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
       providers: [
+        RepositoryProvider<KeyValueStore>.value(value: storage),
         RepositoryProvider<UrlOpener>(
           create: (_) => const UrlOpener(),
         ),
         RepositoryProvider<PathPicker>(
           create: (_) => const PathPicker(),
         ),
+        RepositoryProvider<SettingsRepository>(
+          create: (context) => SettingsRepository(
+            storage: context.read(),
+          ),
+        ),
         RepositoryProvider<PubspecReader>(
           create: (context) => const DefaultPubspecReader(),
         ),
         RepositoryProvider<PackageService>(
-          create: (context) => const DefaultPackageService(),
+          create: (context) => DefaultPackageService(
+            sdkSettings: context.read<SettingsRepository>(),
+          ),
         ),
         RepositoryProvider<ProjectRepository>(
           create: (context) => DefaultProjectRepository(
@@ -44,40 +54,50 @@ class App extends StatelessWidget {
             packageUpdater: context.read(),
           ),
         ),
-        RepositoryProvider(
+        RepositoryProvider<OpenProjectsRepository>(
           create: (context) => OpenProjectsRepository(
             maxSavedCount: AppConstants.maxOpenedProjectsCount,
-            storage: storage,
+            storage: context.read(),
           ),
         ),
       ],
       child: MultiBlocProvider(
         providers: [
+          BlocProvider<SettingsBloc>(
+            create: (context) => SettingsBloc(
+              settingsRepository: context.read(),
+            )..add(const SettingsEvent.restore()),
+          ),
           BlocProvider<OpenedProjectsBloc>(
             create: (context) => OpenedProjectsBloc(
               projectsRepository: context.read(),
             )..add(const OpenedProjectsEvent.loadAll()),
           ),
         ],
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          restorationScopeId: 'app',
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [
-            Locale('en', ''),
-          ],
-          onGenerateTitle: (BuildContext context) =>
-              AppLocalizations.of(context).appTitle,
-          theme: lightTheme,
-          darkTheme: darkTheme,
-          themeMode: ThemeMode.system,
-          onGenerateRoute: (RouteSettings routeSettings) {
-            return MaterialPageRoute(builder: (_) => const HomePage());
+        child: BlocSelector<SettingsBloc, SettingsState, ThemeMode>(
+          selector: (state) => state.settings.themeMode,
+          builder: (context, themeMode) {
+            return MaterialApp(
+              debugShowCheckedModeBanner: false,
+              restorationScopeId: 'app',
+              localizationsDelegates: const [
+                AppLocalizations.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              supportedLocales: const [
+                Locale('en', ''),
+              ],
+              onGenerateTitle: (BuildContext context) =>
+                  AppLocalizations.of(context).appTitle,
+              theme: lightTheme,
+              darkTheme: darkTheme,
+              themeMode: themeMode,
+              onGenerateRoute: (RouteSettings routeSettings) {
+                return MaterialPageRoute(builder: (_) => const HomePage());
+              },
+            );
           },
         ),
       ),

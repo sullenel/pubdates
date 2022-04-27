@@ -14,11 +14,15 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
+
+  # State management
   freezed_annotation: ^1.1.0
   bloc: ^8.0.2
   bloc_concurrency: ^0.2.0
   flutter_bloc: ^8.0.1
   provider: ^6.0.0
+
+  # Utils
   pubspec_lock: ^3.0.1
   pubspec_parse: ^1.2.0
   path: ^1.8.0
@@ -27,7 +31,10 @@ dependencies:
   html: ^0.15.0
   flutter_widget_from_html_core: ^0.8.5
   pub_semver: ^2.1.1
-  shared_preferences: ^2.0.13
+
+  # UI
+  scroll_to_index: ^2.1.1
+  animations: ^2.0.2
 
   # Native
   file_selector: ^0.8.3
@@ -35,7 +42,7 @@ dependencies:
   file_selector_windows: ^0.8.2
   file_selector_linux: ^0.0.2
   url_launcher: ^6.0.0
-  scroll_to_index: ^2.1.1
+  shared_preferences: ^2.0.13
 
 dev_dependencies:
   flutter_test:
