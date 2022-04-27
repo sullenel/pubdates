@@ -11,6 +11,7 @@ import 'package:pubdates/features/project/models/package_sorting.dart';
 import 'package:pubdates/features/project/models/package_update.dart';
 import 'package:pubdates/features/project/models/project.dart';
 import 'package:pubdates/features/project/repositories/project_repository.dart';
+import 'package:pubdates/features/settings/repositories/settings_repository.dart';
 
 export 'package:pubdates/features/project/bloc/project_event.dart';
 export 'package:pubdates/features/project/bloc/project_state.dart';
@@ -26,7 +27,9 @@ export 'package:pubdates/features/project/bloc/project_state.dart';
 class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
   ProjectBloc({
     required ProjectRepository projectRepository,
+    required SettingsRepository settingsRepository,
   })  : _projectRepository = projectRepository,
+        _settingsRepository = settingsRepository,
         super(const ProjectState.initial()) {
     on<ProjectEvent>(
       (event, emit) => event.map<Future<void>>(
@@ -38,6 +41,7 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
   }
 
   final ProjectRepository _projectRepository;
+  final SettingsRepository _settingsRepository;
 
   Future<void> _handleProjectSelected(
     SelectProjectEvent event,
@@ -84,7 +88,10 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
         return emit(ProjectState.noUpdates(project: updatedProject));
       }
 
-      emit(ProjectState.loaded(project: updatedProject));
+      final sorting = await _settingsRepository.packageSorting;
+      final sortedProject =
+          updatedProject.withDependenciesSortedBy(sorting: sorting);
+      emit(ProjectState.loaded(project: sortedProject));
     } on AppException catch (error, trace) {
       emit(ProjectState.failed(error: error, path: path, stackTrace: trace));
       rethrow;

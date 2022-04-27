@@ -16,8 +16,6 @@ import 'package:pubdates/features/changelog/services/changelog_provider.dart';
 import 'package:pubdates/features/changelog/widgets/changelog_list.dart';
 import 'package:pubdates/features/opened_projects/bloc/opened_projects_bloc.dart';
 import 'package:pubdates/features/project/bloc/project_bloc.dart';
-import 'package:pubdates/features/project/bloc/project_event.dart';
-import 'package:pubdates/features/project/bloc/project_state.dart';
 import 'package:pubdates/features/project/models/package.dart';
 import 'package:pubdates/features/project/widgets/invalid_project.dart';
 import 'package:pubdates/features/project/widgets/project_no_dependencies.dart';
@@ -64,6 +62,7 @@ class ProjectPage extends StatefulWidget {
                 BlocProvider<ProjectBloc>(
                   create: (context) => ProjectBloc(
                     projectRepository: context.read(),
+                    settingsRepository: context.read(),
                   )..add(ProjectEvent.select(path: path)),
                 ),
                 BlocProvider<ChangeLogBloc>(
