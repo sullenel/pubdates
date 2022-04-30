@@ -2,7 +2,7 @@
   "appTitle": "pubdates",
   "dependenciesTitle": "Dependencies",
   "devDependenciesTitle": "Dev dependencies",
-  "selectProjectAction": "Select a Project",
+  "selectProjectAction": "Select a project",
   "selectAction": "Select",
   "projectNotSelect": "No project is selected",
   "projectNoDependencies": "This project has no dependencies, thus no updates either. Good job!",

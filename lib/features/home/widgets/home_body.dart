@@ -51,7 +51,6 @@ class _HomeBodyState extends State<HomeBody> {
 
   @override
   Widget build(BuildContext context) {
-    final colors = context.colorScheme;
     final hasOpenedProjects = context.hasOpenedProjects;
 
     // No need for FocusableActionDetector for now
@@ -62,31 +61,27 @@ class _HomeBodyState extends State<HomeBody> {
       },
       child: Focus(
         autofocus: true,
-        child: ColoredBox(
-          color: colors.secondary,
-          child: FractionallySizedBox(
-            widthFactor: 1,
-            heightFactor: 1,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
+        child: FractionallySizedBox(
+          widthFactor: 1,
+          heightFactor: 1,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(AppInsets.lg),
+                  child: HomeHeader(onSelectPressed: _handleSelectProject),
+                ),
+              ),
+              if (hasOpenedProjects)
                 Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(AppInsets.lg),
-                    child: HomeHeader(onSelectPressed: _handleSelectProject),
+                  flex: 2,
+                  child: OpenedProjectsList(
+                    onSelect: _handleOpenProject,
+                    onDelete: _handleDeleteOpenedProject,
                   ),
                 ),
-                if (hasOpenedProjects)
-                  Expanded(
-                    flex: 2,
-                    // TODO: Limit the width of the project list
-                    child: OpenedProjectsList(
-                      onSelect: _handleOpenProject,
-                      onDelete: _handleDeleteOpenedProject,
-                    ),
-                  ),
-              ],
-            ),
+            ],
           ),
         ),
       ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pubdates/common/constants/colors.dart';
 import 'package:pubdates/common/constants/dimensions.dart';
 import 'package:pubdates/common/utils/typedefs.dart';
 import 'package:pubdates/features/project/models/package.dart';
@@ -35,7 +36,7 @@ class ProjectDependencyList extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Material(
-      color: theme.colorScheme.secondary,
+      color: theme.appBarTheme.backgroundColor,
       child: CustomScrollView(
         primary: false,
         slivers: [
@@ -63,7 +64,8 @@ class ProjectDependencyList extends StatelessWidget {
           ],
           if (devDependencies.isNotEmpty) ...[
             SliverPadding(
-              padding: const EdgeInsets.symmetric(horizontal: AppInsets.lg),
+              padding: const EdgeInsets.symmetric(horizontal: AppInsets.lg) +
+                  const EdgeInsets.only(top: AppInsets.md),
               sliver: SliverBox(
                 child: SectionTitle(
                   title: t.devDependenciesTitle,
@@ -113,6 +115,7 @@ class _DependencyList extends StatelessWidget {
     final pkg = dependencies[index];
 
     return ProjectDependencyTile(
+      // FIXME: don't set for package that cannot be upgraded
       onPressed: onPressed == null ? null : () => onPressed!(pkg),
       package: pkg,
     );
@@ -138,7 +141,7 @@ class _PackageCount extends StatelessWidget {
     return DecoratedBox(
       decoration: BoxDecoration(
         borderRadius: AppBorders.button,
-        color: theme.colorScheme.onSecondary,
+        color: theme.colorScheme.secondary,
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(
@@ -149,7 +152,10 @@ class _PackageCount extends StatelessWidget {
           message: tooltip,
           child: Text(
             '$totalCount / $toBeUpgradedCount',
-            style: theme.textTheme.labelMedium,
+            style: theme.textTheme.labelMedium?.copyWith(
+              height: 1.4,
+              color: theme.colorScheme.onSecondaryContainer,
+            ),
             semanticsLabel: tooltip,
           ),
         ),

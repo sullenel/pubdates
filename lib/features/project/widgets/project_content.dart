@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pubdates/common/utils/flutter_utils.dart';
 import 'package:pubdates/common/utils/scroll_utils.dart';
 import 'package:pubdates/common/widgets/responsive_layout_builder.dart';
 import 'package:pubdates/features/project/bloc/project_bloc.dart';
@@ -110,9 +111,13 @@ class _DefaultProjectContent extends StatelessWidget {
             ),
           ),
         ),
+        const VerticalDivider(width: 1),
         Expanded(
           flex: 3,
-          child: child,
+          child: ColoredBox(
+            color: context.theme.scaffoldBackgroundColor,
+            child: child,
+          ),
         ),
       ],
     );

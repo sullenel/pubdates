@@ -21,21 +21,17 @@ class _PackageSortingOption extends StatelessWidget {
 
     return ListTile(
       title: Text(t.packageSortingOption),
-      trailing: DropdownButtonHideUnderline(
-        child: DropdownButton<PackageSorting>(
-          onChanged: context.updatePackageSorting,
-          value: selected,
-          focusColor: AppColors.transparent,
-          alignment: Alignment.centerRight,
-          items: [
-            for (final option in PackageSorting.values)
-              DropdownMenuItem(
-                value: option,
-                enabled: option != selected,
-                child: Text(t.packageSortingName(option)),
-              ),
-          ],
-        ),
+      trailing: CustomDropdown<PackageSorting>(
+        onChanged: context.updatePackageSorting,
+        selectedValue: selected,
+        items: [
+          for (final option in PackageSorting.values)
+            DropdownMenuItem(
+              value: option,
+              enabled: option != selected,
+              child: Text(t.packageSortingName(option)),
+            ),
+        ],
       ),
     );
   }

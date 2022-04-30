@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pubdates/common/constants/dimensions.dart';
+import 'package:pubdates/common/themes.dart';
+import 'package:pubdates/common/utils/flutter_utils.dart';
 import 'package:pubdates/common/widgets/space.dart';
 
 class CustomListTile extends StatelessWidget {
@@ -29,8 +31,8 @@ class CustomListTile extends StatelessWidget {
       borderRadius: borderRadius,
       child: Ink(
         decoration: BoxDecoration(
-          borderRadius: AppBorders.button,
-          color: backgroundColor,
+          borderRadius: borderRadius,
+          color: backgroundColor ?? context.theme.customListTileBackgroundColor,
         ),
         padding: padding ??
             const EdgeInsets.symmetric(

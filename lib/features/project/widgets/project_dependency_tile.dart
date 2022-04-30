@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:pubdates/common/constants/colors.dart';
 import 'package:pubdates/common/constants/dimensions.dart';
 import 'package:pubdates/common/constants/icons.dart';
+import 'package:pubdates/common/themes.dart';
 import 'package:pubdates/common/widgets/custom_list_tile.dart';
 import 'package:pubdates/common/widgets/space.dart';
 import 'package:pubdates/features/project/models/package.dart';
@@ -34,10 +36,8 @@ class ProjectDependencyTile extends StatelessWidget {
       ),
       child: CustomListTile(
         onPressed: onPressed,
-        // FIXME: the color must come from the theme
-        backgroundColor: Colors.black.withOpacity(0.2),
         trailing: package.canBeUpgraded
-            ? const Icon(AppIcons.circle, color: Colors.orange, size: 10)
+            ? const Icon(AppIcons.circle, color: AppColors.update, size: 10)
             : null,
         child: _PackageInfoSection(package: package),
       ),
@@ -56,8 +56,8 @@ class _PackageInfoSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final colors = theme.colorScheme;
     final textTheme = theme.textTheme;
+    final textColor = theme.customListTileForegroundColor;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -67,7 +67,7 @@ class _PackageInfoSection extends StatelessWidget {
           child: Text(
             package.name,
             style: textTheme.titleMedium?.copyWith(
-              color: colors.onSecondary,
+              color: textColor,
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -77,7 +77,7 @@ class _PackageInfoSection extends StatelessWidget {
           child: Text(
             package.upgradePath,
             style: textTheme.bodySmall?.copyWith(
-              color: colors.onSecondary.withOpacity(0.5),
+              color: textColor.withOpacity(0.5),
             ),
           ),
         ),
