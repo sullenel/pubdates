@@ -115,8 +115,8 @@ class _DependencyList extends StatelessWidget {
     final pkg = dependencies[index];
 
     return ProjectDependencyTile(
-      // FIXME: don't set for package that cannot be upgraded
-      onPressed: onPressed == null ? null : () => onPressed!(pkg),
+      onPressed:
+          onPressed != null && pkg.canBeUpgraded ? () => onPressed!(pkg) : null,
       package: pkg,
     );
   }
