@@ -12,7 +12,7 @@ extension on Package {
     final currentVersion = version ?? '-';
 
     return canBeUpgraded
-        ? '$currentVersion 🠖 ${update?.upgradableVersion}'
+        ? '$currentVersion ➔ ${update?.upgradableVersion}'
         : currentVersion;
   }
 }
@@ -76,7 +76,7 @@ class _PackageInfoSection extends StatelessWidget {
         Flexible(
           child: Text(
             package.upgradePath,
-            style: textTheme.bodySmall?.copyWith(
+            style: textTheme.bodyMedium?.copyWith(
               color: textColor.withOpacity(0.5),
             ),
           ),

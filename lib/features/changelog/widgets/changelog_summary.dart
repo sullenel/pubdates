@@ -96,7 +96,7 @@ class _ChangeLogHeader extends StatelessWidget {
               children: [
                 Text(
                   package.name,
-                  style: theme.textTheme.titleLarge?.copyWith(
+                  style: theme.textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -131,9 +131,9 @@ class _PackageVersions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = AppLocalizations.of(context);
+    late final t = AppLocalizations.of(context);
     final theme = Theme.of(context);
-    final textStyle = theme.textTheme.labelMedium;
+    final textStyle = theme.textTheme.bodyLarge;
     const separator = Text(' • ');
 
     return Row(
@@ -224,15 +224,15 @@ class _NoChangeLog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
+    final theme = Theme.of(context);
 
     return Padding(
       padding: const EdgeInsets.all(AppInsets.lg),
       child: Text(
         AppLocalizations.of(context).noChangeLog,
-        style: textTheme.titleLarge?.copyWith(
+        style: theme.textTheme.titleLarge?.copyWith(
           fontWeight: FontWeight.normal,
-          color: textTheme.caption?.color,
+          color: theme.colorScheme.error,
         ),
       ),
     );

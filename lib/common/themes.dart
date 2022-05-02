@@ -31,7 +31,7 @@ class _ThemeBuilder {
     return ThemeData(
       useMaterial3: true,
       fontFamily: _fontFamily,
-      textTheme: _textTheme,
+      textTheme: _tweakedTextTheme,
       colorScheme: _colors,
       appBarTheme: _appBarTheme,
       cardTheme: _cardTheme,
@@ -150,11 +150,16 @@ class _ThemeBuilder {
           border: Border.all(color: _borderColor!),
         ),
       );
+
+  TextTheme? get _tweakedTextTheme => _textTheme?.copyWith(
+        headlineSmall: _textTheme?.headlineSmall?.copyWith(height: 1.2),
+        bodyLarge: _textTheme?.bodyLarge?.copyWith(height: 1.8),
+      );
 }
 
 // The colors are shamelessly stolen from Github themes.
-ThemeData get lightTheme => const _ThemeBuilder(
-      colors: ColorScheme.light(
+ThemeData get lightTheme => _ThemeBuilder(
+      colors: const ColorScheme.light(
         primary: Color(0xFF24292F),
         onPrimary: Colors.white,
         primaryContainer: Colors.white,
@@ -172,14 +177,18 @@ ThemeData get lightTheme => const _ThemeBuilder(
         error: Color(0xFFCF222E),
         onError: Colors.white,
       ),
-      borderColor: Color(0xFFD8DEE4),
+      textTheme: ThemeData.light().textTheme.apply(
+            bodyColor: const Color(0xFF24292F),
+            displayColor: const Color(0xFF57606a),
+          ),
+      borderColor: const Color(0xFFD8DEE4),
       splashColor: Colors.black26,
       highlightColor: Colors.black12,
       hoverColor: Colors.black12,
     ).toTheme();
 
-ThemeData get darkTheme => const _ThemeBuilder(
-      colors: ColorScheme.dark(
+ThemeData get darkTheme => _ThemeBuilder(
+      colors: const ColorScheme.dark(
         primary: Color(0xFF2D333B),
         onPrimary: Color(0xFFcdd9e5),
         primaryContainer: Color(0xFF2D333B),
@@ -197,7 +206,11 @@ ThemeData get darkTheme => const _ThemeBuilder(
         error: Color(0xFFE5534B),
         onError: Color(0xFFCDD9E5),
       ),
-      borderColor: Color(0xFF373e47),
+      textTheme: ThemeData.dark().textTheme.apply(
+            bodyColor: const Color(0xFFadbac7),
+            displayColor: const Color(0xFF768390),
+          ),
+      borderColor: const Color(0xFF373e47),
       splashColor: Colors.black26,
       highlightColor: Colors.black12,
       hoverColor: Colors.black12,

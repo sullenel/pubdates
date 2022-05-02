@@ -77,7 +77,7 @@ class _ProjectInfoSection extends StatelessWidget {
         const VSpace(AppInsets.md),
         Text(
           subtitle,
-          style: textTheme.bodySmall?.copyWith(
+          style: textTheme.bodyMedium?.copyWith(
             color: textColor.withOpacity(0.5),
           ),
         ),
