@@ -182,4 +182,11 @@ ThemeData get darkTheme => const _ThemeBuilder(
 extension ThemeExtension on ThemeData {
   Color get customListTileBackgroundColor => colorScheme.secondaryContainer;
   Color get customListTileForegroundColor => colorScheme.onSecondaryContainer;
+
+  // For HTML tags
+  bool get _isInDarkMode => brightness == Brightness.dark;
+  Color get linkColor =>
+      _isInDarkMode ? const Color(0xFF539BF5) : const Color(0xFF0969da);
+  Color get codeColor =>
+      _isInDarkMode ? const Color(0xFF373E47) : const Color(0xFFf6f8fa);
 }
