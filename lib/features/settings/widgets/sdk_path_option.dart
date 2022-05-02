@@ -33,7 +33,10 @@ class _SdkPathOption extends StatelessWidget {
       subtitle: hasSdkPath ? Text(path) : Text(t.sdkPathOptionDescription),
       trailing: hasSdkPath
           ? OutlinedButton(
-              style: OutlinedButton.styleFrom(primary: colors.error),
+              style: OutlinedButton.styleFrom(
+                primary: colors.error,
+                side: BorderSide(color: colors.error),
+              ),
               onPressed: context.unsetSdkPath,
               child: Text(t.unsetAction),
             )

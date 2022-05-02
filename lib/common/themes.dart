@@ -5,25 +5,33 @@ import 'package:pubdates/common/constants/dimensions.dart';
 class _ThemeBuilder {
   const _ThemeBuilder({
     required ColorScheme colors,
+    TextTheme? textTheme,
     Color? borderColor,
     Color? splashColor,
     Color? highlightColor,
     Color? hoverColor,
+    String? fontFamily,
   })  : _colors = colors,
+        _textTheme = textTheme,
         _borderColor = borderColor,
         _splashColor = splashColor,
         _highlightColor = highlightColor,
-        _hoverColor = hoverColor;
+        _hoverColor = hoverColor,
+        _fontFamily = fontFamily;
 
   final ColorScheme _colors;
+  final TextTheme? _textTheme;
   final Color? _borderColor;
   final Color? _splashColor;
   final Color? _highlightColor;
   final Color? _hoverColor;
+  final String? _fontFamily;
 
   ThemeData toTheme() {
     return ThemeData(
       useMaterial3: true,
+      fontFamily: _fontFamily,
+      textTheme: _textTheme,
       colorScheme: _colors,
       appBarTheme: _appBarTheme,
       cardTheme: _cardTheme,
@@ -85,15 +93,23 @@ class _ThemeBuilder {
       );
 
   TextButtonThemeData get _textButtonTheme => TextButtonThemeData(
-        style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(_colors.secondary),
-          foregroundColor: MaterialStateProperty.all(_colors.onSecondary),
+        style: TextButton.styleFrom(
+          backgroundColor: _colors.secondary,
+          primary: _colors.onSecondary,
+          shape: const RoundedRectangleBorder(borderRadius: AppBorders.button),
         ),
       );
 
   OutlinedButtonThemeData get _outlinedButtonTheme => OutlinedButtonThemeData(
-        style: ButtonStyle(
-          foregroundColor: MaterialStateProperty.all(_colors.primary),
+        style: OutlinedButton.styleFrom(
+          primary: _colors.onPrimaryContainer,
+          backgroundColor: _colors.primaryContainer,
+          side: BorderSide(color: _borderColor!),
+          shape: const RoundedRectangleBorder(borderRadius: AppBorders.button),
+          textStyle: const TextStyle(
+            // NOTE: otherwise the text is not vertically centered
+            height: 1.1,
+          ),
         ),
       );
 
@@ -149,6 +165,8 @@ ThemeData get lightTheme => const _ThemeBuilder(
         surface: Colors.white,
         onSurface: Color(0xFF24292F),
         shadow: Color.fromRGBO(140, 149, 159, 0.15),
+        error: Color(0xFFCF222E),
+        onError: Colors.white,
       ),
       borderColor: Color(0xFFD8DEE4),
       splashColor: Colors.black26,
@@ -171,6 +189,8 @@ ThemeData get darkTheme => const _ThemeBuilder(
         surface: Color(0xFF22272E),
         onSurface: Color(0xFFadbac7),
         shadow: Colors.transparent,
+        error: Color(0xFFE5534B),
+        onError: Color(0xFFCDD9E5),
       ),
       borderColor: Color(0xFF373e47),
       splashColor: Colors.black26,
