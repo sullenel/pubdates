@@ -81,8 +81,11 @@ class _ThemeBuilder {
         ),
       );
 
-  // TODO: configure scrollbar theme
-  ScrollbarThemeData get _scrollBarTheme => const ScrollbarThemeData();
+  // The spec fails at explaining what these tertiaries and other shitaries they
+  // came up with should be used for, so let's us it for the scrollbar for now. #yolo
+  ScrollbarThemeData get _scrollBarTheme => ScrollbarThemeData(
+        thumbColor: MaterialStateProperty.all(_colors.tertiary),
+      );
 
   ProgressIndicatorThemeData get _progressIndicatorTheme =>
       ProgressIndicatorThemeData(
@@ -160,6 +163,7 @@ ThemeData get lightTheme => const _ThemeBuilder(
         onSecondary: Colors.white,
         secondaryContainer: Color.fromRGBO(0, 0, 0, 0.2),
         onSecondaryContainer: Colors.white,
+        tertiary: Colors.black38,
         background: Color(0xFFF6F8FA),
         onBackground: Color(0xFF57606a),
         surface: Colors.white,
@@ -184,6 +188,7 @@ ThemeData get darkTheme => const _ThemeBuilder(
         onSecondary: Colors.white,
         secondaryContainer: Color.fromRGBO(0, 0, 0, 0.2),
         onSecondaryContainer: Colors.white,
+        tertiary: Color(0xFF373e47),
         background: Color(0xFF1C2128),
         onBackground: Color(0xFF768390),
         surface: Color(0xFF22272E),
