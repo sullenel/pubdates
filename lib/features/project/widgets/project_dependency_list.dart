@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pubdates/common/constants/colors.dart';
 import 'package:pubdates/common/constants/dimensions.dart';
 import 'package:pubdates/common/utils/typedefs.dart';
 import 'package:pubdates/features/project/models/package.dart';
@@ -102,8 +101,7 @@ class _DependencyList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverPrototypeExtentList(
-      prototypeItem: _buildItem(context, 0),
+    return SliverList(
       delegate: SliverChildBuilderDelegate(
         _buildItem,
         childCount: dependencies.length,
