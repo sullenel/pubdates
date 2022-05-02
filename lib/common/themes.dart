@@ -38,6 +38,7 @@ class _ThemeBuilder {
       outlinedButtonTheme: _outlinedButtonTheme,
       popupMenuTheme: _popupMenuTheme,
       listTileTheme: _listTileTheme,
+      tooltipTheme: _tooltipTheme,
 
       // Legacy stuff
       hoverColor: _hoverColor,
@@ -116,6 +117,19 @@ class _ThemeBuilder {
         tileColor: _colors.primaryContainer,
         textColor: _colors.onPrimaryContainer,
         iconColor: _colors.onPrimaryContainer.withOpacity(0.5),
+      );
+
+  TooltipThemeData get _tooltipTheme => TooltipThemeData(
+        padding: const EdgeInsets.all(AppInsets.md),
+        textStyle: TextStyle(
+          fontSize: 12,
+          color: _colors.onPrimaryContainer,
+        ),
+        decoration: BoxDecoration(
+          color: _colors.primaryContainer,
+          borderRadius: AppBorders.button,
+          border: Border.all(color: _borderColor!),
+        ),
       );
 }
 
