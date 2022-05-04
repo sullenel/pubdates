@@ -35,7 +35,7 @@ class ProjectDependencyList extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Material(
-      color: theme.colorScheme.secondary,
+      color: theme.appBarTheme.backgroundColor,
       child: CustomScrollView(
         primary: false,
         slivers: [
@@ -63,7 +63,8 @@ class ProjectDependencyList extends StatelessWidget {
           ],
           if (devDependencies.isNotEmpty) ...[
             SliverPadding(
-              padding: const EdgeInsets.symmetric(horizontal: AppInsets.lg),
+              padding: const EdgeInsets.symmetric(horizontal: AppInsets.lg) +
+                  const EdgeInsets.only(top: AppInsets.md),
               sliver: SliverBox(
                 child: SectionTitle(
                   title: t.devDependenciesTitle,
@@ -100,8 +101,7 @@ class _DependencyList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverPrototypeExtentList(
-      prototypeItem: _buildItem(context, 0),
+    return SliverList(
       delegate: SliverChildBuilderDelegate(
         _buildItem,
         childCount: dependencies.length,
@@ -113,7 +113,8 @@ class _DependencyList extends StatelessWidget {
     final pkg = dependencies[index];
 
     return ProjectDependencyTile(
-      onPressed: onPressed == null ? null : () => onPressed!(pkg),
+      onPressed:
+          onPressed != null && pkg.canBeUpgraded ? () => onPressed!(pkg) : null,
       package: pkg,
     );
   }
@@ -138,7 +139,7 @@ class _PackageCount extends StatelessWidget {
     return DecoratedBox(
       decoration: BoxDecoration(
         borderRadius: AppBorders.button,
-        color: theme.colorScheme.onSecondary,
+        color: theme.colorScheme.secondary,
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(
@@ -149,7 +150,10 @@ class _PackageCount extends StatelessWidget {
           message: tooltip,
           child: Text(
             '$totalCount / $toBeUpgradedCount',
-            style: theme.textTheme.labelMedium,
+            style: theme.textTheme.labelMedium?.copyWith(
+              height: 1.4,
+              color: theme.colorScheme.onSecondaryContainer,
+            ),
             semanticsLabel: tooltip,
           ),
         ),

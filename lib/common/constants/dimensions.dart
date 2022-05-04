@@ -9,4 +9,5 @@ abstract class AppInsets {
 abstract class AppBorders {
   static const button = BorderRadius.all(Radius.circular(6));
   static const card = BorderRadius.all(Radius.circular(6));
+  static const dialog = card;
 }

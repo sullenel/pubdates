@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pubdates/common/constants/dimensions.dart';
+import 'package:pubdates/common/utils/flutter_utils.dart';
 
 class DialogTitle extends StatelessWidget {
   const DialogTitle({
@@ -11,11 +12,26 @@ class DialogTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(AppInsets.lg),
-      child: Text(
-        title,
-        style: Theme.of(context).textTheme.titleLarge,
+    final theme = context.theme;
+    const borderRadius = AppBorders.dialog;
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: theme.appBarTheme.backgroundColor,
+        borderRadius: BorderRadius.only(
+          topLeft: borderRadius.topLeft,
+          topRight: borderRadius.topRight,
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(AppInsets.lg),
+        child: Text(
+          title,
+          textAlign: TextAlign.center,
+          style: theme.textTheme.titleMedium?.copyWith(
+            color: theme.appBarTheme.foregroundColor,
+          ),
+        ),
       ),
     );
   }

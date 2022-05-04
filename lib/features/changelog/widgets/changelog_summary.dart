@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pubdates/common/constants/dimensions.dart';
 import 'package:pubdates/common/constants/icons.dart';
+import 'package:pubdates/common/utils/flutter_utils.dart';
 import 'package:pubdates/common/utils/typedefs.dart';
 import 'package:pubdates/common/widgets/space.dart';
 import 'package:pubdates/features/changelog/models/changelog_content.dart';
@@ -36,6 +37,11 @@ class ChangeLogSummary extends StatelessWidget {
     return showAll ? changeLog.logs : changeLog.logsTillCurrentVersion;
   }
 
+  bool get _canShowAll {
+    // FIXME: may be check the version too? What if there is nothing to show more?
+    return onPressed != null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -58,10 +64,7 @@ class ChangeLogSummary extends StatelessWidget {
                 ),
                 const Divider(height: 0),
               ],
-              TextButton(
-                onPressed: onPressed,
-                child: Text(AppLocalizations.of(context).showAllAction),
-              ),
+              if (_canShowAll) _ShowAllAction(onPressed: onPressed),
             ] else
               const _NoChangeLog(),
           ],
@@ -96,7 +99,7 @@ class _ChangeLogHeader extends StatelessWidget {
               children: [
                 Text(
                   package.name,
-                  style: theme.textTheme.titleLarge?.copyWith(
+                  style: theme.textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -131,9 +134,9 @@ class _PackageVersions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = AppLocalizations.of(context);
+    late final t = AppLocalizations.of(context);
     final theme = Theme.of(context);
-    final textStyle = theme.textTheme.labelMedium;
+    final textStyle = theme.textTheme.bodyLarge;
     const separator = Text(' • ');
 
     return Row(
@@ -224,15 +227,55 @@ class _NoChangeLog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
+    final theme = Theme.of(context);
 
     return Padding(
       padding: const EdgeInsets.all(AppInsets.lg),
       child: Text(
         AppLocalizations.of(context).noChangeLog,
-        style: textTheme.titleLarge?.copyWith(
+        style: theme.textTheme.titleLarge?.copyWith(
           fontWeight: FontWeight.normal,
-          color: textTheme.caption?.color,
+          color: theme.colorScheme.error,
+        ),
+      ),
+    );
+  }
+}
+
+class _ShowAllAction extends StatelessWidget {
+  const _ShowAllAction({
+    Key? key,
+    this.onPressed,
+  }) : super(key: key);
+
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = context.textTheme;
+    final textStyle = textTheme.bodyMedium;
+
+    return InkWell(
+      onTap: onPressed,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppInsets.lg,
+          vertical: AppInsets.md,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              AppLocalizations.of(context).showAllAction,
+              style: textStyle,
+            ),
+            const HSpace(AppInsets.sm),
+            Icon(
+              Icons.keyboard_arrow_down,
+              size: 16,
+              color: textStyle?.color,
+            ),
+          ],
         ),
       ),
     );

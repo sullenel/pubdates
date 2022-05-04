@@ -21,8 +21,7 @@ class SectionTitle extends StatelessWidget {
         Expanded(
           child: Text(
             title,
-            style: theme.textTheme.headlineSmall?.copyWith(
-              fontWeight: FontWeight.bold,
+            style: theme.textTheme.titleLarge?.copyWith(
               color: theme.colorScheme.onSecondary.withOpacity(0.2),
             ),
           ),

@@ -38,24 +38,18 @@ class _SelectProjectAction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final colors = theme.colorScheme;
 
-    return OutlinedButton(
+    return TextButton(
       onPressed: onPressed,
       style: TextButton.styleFrom(
         padding: const EdgeInsets.all(AppInsets.lg * 1.5),
-        side: BorderSide(
-          color: colors.onSecondary.withOpacity(0.1),
-          width: 1,
+        textStyle: theme.textTheme.titleLarge?.copyWith(
+          height: 1,
+          fontWeight: FontWeight.normal,
         ),
       ),
       child: Text(
         AppLocalizations.of(context).selectProjectAction,
-        style: theme.textTheme.titleLarge?.copyWith(
-          height: 1,
-          fontWeight: FontWeight.normal,
-          color: colors.onSecondary.withOpacity(0.5),
-        ),
       ),
     );
   }

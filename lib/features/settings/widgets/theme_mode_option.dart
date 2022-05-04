@@ -20,21 +20,17 @@ class _ThemeModeOption extends StatelessWidget {
 
     return ListTile(
       title: Text(t.themeOption),
-      trailing: DropdownButtonHideUnderline(
-        child: DropdownButton<ThemeMode>(
-          onChanged: context.updateThemeMode,
-          value: selectedMode,
-          focusColor: AppColors.transparent,
-          alignment: Alignment.centerRight,
-          items: [
-            for (final option in ThemeMode.values)
-              DropdownMenuItem(
-                value: option,
-                enabled: option != selectedMode,
-                child: Text(t.themeModeName(option)),
-              ),
-          ],
-        ),
+      trailing: CustomDropdown<ThemeMode>(
+        onChanged: context.updateThemeMode,
+        selectedValue: selectedMode,
+        items: [
+          for (final option in ThemeMode.values)
+            DropdownMenuItem(
+              value: option,
+              enabled: option != selectedMode,
+              child: Text(t.themeModeName(option)),
+            ),
+        ],
       ),
     );
   }
