@@ -1,4 +1,5 @@
 import 'package:html/dom.dart';
+import 'package:pubdates/common/utils/iterable_utils.dart';
 import 'package:pubdates/features/changelog/models/changelog_content.dart';
 
 final _cleanVersionRegExp = RegExp(r'[\[\]#]');
@@ -34,7 +35,7 @@ class DefaultChangeLogContentParser implements ChangeLogContentParser {
         .querySelectorAll('.changelog-entry')
         .map(_parseEntry)
         .whereType<ChangeLogContent>()
-        .toList(growable: false);
+        .toFixedList();
 
     if (result.isEmpty && nextParser != null) {
       return nextParser!.parse(document);
@@ -60,7 +61,11 @@ class DefaultChangeLogContentParser implements ChangeLogContentParser {
 
 // Changelog examples:
 // - https://pub.dev/packages/smooth_page_indicator/changelog
+// - https://pub.dev/packages/google_fonts/changelog
+// - https://pub.dev/packages/cached_network_image/changelog
 class AlternativeChangeLogContentParser implements ChangeLogContentParser {
+  static const _changeLogStartClass = 'hash-header';
+
   const AlternativeChangeLogContentParser({this.nextParser});
 
   @override
@@ -75,10 +80,10 @@ class AlternativeChangeLogContentParser implements ChangeLogContentParser {
     }
 
     final result = el.children
-        .where(_isChangeLogEntry)
+        .where(_isStartOfChangeLogEntry)
         .map(_parseEntry)
         .whereType<ChangeLogContent>()
-        .toList(growable: false);
+        .toFixedList();
 
     if (result.isEmpty && nextParser != null) {
       return nextParser!.parse(document);
@@ -87,9 +92,9 @@ class AlternativeChangeLogContentParser implements ChangeLogContentParser {
     return result;
   }
 
-  // Changelog entries are structured as H2-tags directly followed by UL-tags.
-  bool _isChangeLogEntry(Element el) {
-    return el.localName == 'h2' && el.classes.contains('hash-header');
+  // A changelog entry starts as a H2-tag directly followed by other tags.
+  bool _isStartOfChangeLogEntry(Element el) {
+    return el.localName == 'h2' && el.classes.contains(_changeLogStartClass);
   }
 
   ChangeLogContent? _parseEntry(Element el) {
@@ -107,13 +112,27 @@ class AlternativeChangeLogContentParser implements ChangeLogContentParser {
   }
 
   String? _parseContent(Element el) {
-    var nextEl = el.nextElementSibling;
+    final elements = _findContentElements(el).toFixedList();
 
-    // Changelog example: https://pub.dev/packages/google_fonts/changelog
-    if (nextEl?.localName == 'h3') {
-      nextEl = nextEl?.nextElementSibling;
+    if (elements.isEmpty) {
+      return null;
     }
 
-    return nextEl?.localName == 'ul' ? nextEl?.outerHtml.trim() : null;
+    final outputContainer = Element.tag('div');
+    for (final node in elements) {
+      outputContainer.append(node);
+    }
+
+    return outputContainer.outerHtml.trim();
+  }
+
+  // Finds all the elements between two H2 tags with the class of [_changeLogStartClass]
+  Iterable<Element> _findContentElements(Element root) sync* {
+    Element? el = root.nextElementSibling;
+
+    while (el != null && !_isStartOfChangeLogEntry(el)) {
+      yield el;
+      el = el.nextElementSibling;
+    }
   }
 }
