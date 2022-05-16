@@ -6,6 +6,7 @@ import 'package:pubdates/common/persistence/key_value_store.dart';
 import 'package:pubdates/common/themes.dart';
 import 'package:pubdates/common/utils/path_utils.dart';
 import 'package:pubdates/common/utils/url_utils.dart';
+import 'package:pubdates/common/utils/window_utils.dart';
 import 'package:pubdates/features/home/home_page.dart';
 import 'package:pubdates/features/opened_projects/bloc/opened_projects_bloc.dart';
 import 'package:pubdates/features/opened_projects/repositories/open_projects_repository.dart';
@@ -20,15 +21,18 @@ class App extends StatelessWidget {
   const App({
     Key? key,
     required this.storage,
+    this.windowManager,
   }) : super(key: key);
 
   final KeyValueStore storage;
+  final WindowManager? windowManager;
 
   @override
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider<KeyValueStore>.value(value: storage),
+        RepositoryProvider<WindowManager?>.value(value: windowManager),
         RepositoryProvider<UrlOpener>(
           create: (_) => const UrlOpener(),
         ),

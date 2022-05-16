@@ -32,4 +32,14 @@ class LocalStorage implements KeyValueStore {
   Future<void> putStrings(String key, List<String> values) {
     return _preferences.setStringList(key, values);
   }
+
+  @override
+  Future<double?> getDouble(String key) {
+    return Future.value(_preferences.getDouble(key));
+  }
+
+  @override
+  Future<void> putDouble(String key, double value) {
+    return _preferences.setDouble(key, value);
+  }
 }
