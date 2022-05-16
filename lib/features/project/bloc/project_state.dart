@@ -55,4 +55,17 @@ class ProjectState with _$ProjectState {
         loaded: (_) => true,
         orElse: () => false,
       );
+
+  Project? get project => map<Project?>(
+        initial: (_) => null,
+        noDependencies: (_) => null,
+        loading: (_) => null,
+        gettingUpdates: (state) => state.project,
+        noUpdates: (state) => state.project,
+        loaded: (state) => state.project,
+        sorted: (state) => state.project,
+        failed: (_) => null,
+      );
+
+  String? get title => project?.name;
 }

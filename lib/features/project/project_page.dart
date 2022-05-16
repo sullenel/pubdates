@@ -8,6 +8,7 @@ import 'package:pubdates/common/constants/shortcuts.dart';
 import 'package:pubdates/common/utils/path_utils.dart';
 import 'package:pubdates/common/utils/scroll_utils.dart';
 import 'package:pubdates/common/widgets/loading_indicator.dart';
+import 'package:pubdates/common/widgets/window_title.dart';
 import 'package:pubdates/features/changelog/bloc/changelog_bloc.dart';
 import 'package:pubdates/features/changelog/bloc/changelog_event.dart';
 import 'package:pubdates/features/changelog/repositories/changelog_repository.dart';
@@ -134,8 +135,9 @@ class _ProjectPageState extends State<ProjectPage> {
         child: Material(
           child: BlocConsumer<ProjectBloc, ProjectState>(
             listener: _handleProjectState,
-            builder: (context, state) {
-              return state.map(
+            builder: (context, state) => WindowTitle(
+              title: state.title,
+              child: state.map<Widget>(
                 initial: (_) => ProjectNotSelected(
                   onSelect: _handleSelectProject,
                 ),
@@ -158,8 +160,8 @@ class _ProjectPageState extends State<ProjectPage> {
                   child: const ChangeLogList(),
                 ),
                 failed: (state) => InvalidProject(error: state.error),
-              );
-            },
+              ),
+            ),
           ),
         ),
       ),

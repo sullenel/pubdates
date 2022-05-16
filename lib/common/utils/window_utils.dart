@@ -1,8 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:pubdates/common/constants/constants.dart';
 import 'package:pubdates/common/persistence/window_settings.dart';
 import 'package:pubdates/common/utils/platform_utils.dart';
 import 'package:window_manager/window_manager.dart';
+
+// Hopefully, one day Flutter will have a built-in way to change the app window's title
+extension WindowExtension on BuildContext {
+  void updateWindowTitle(String newTitle) {
+    read<WindowManager?>()?.updateTitle(newTitle);
+  }
+
+  void restoreWindowTitle() {
+    read<WindowManager?>()?.restoreTitle();
+  }
+}
 
 // "A codebase without a manager class is nothing to boast about." - Anonymous Enterprise Developer
 mixin WindowManager {
