@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pubdates/common/config/theme_extensions.dart';
 import 'package:pubdates/common/constants/colors.dart';
 import 'package:pubdates/common/constants/dimensions.dart';
 
@@ -11,13 +12,15 @@ class _ThemeBuilder {
     Color? highlightColor,
     Color? hoverColor,
     String? fontFamily,
+    List<ThemeExtension<dynamic>>? extensions,
   })  : _colors = colors,
         _textTheme = textTheme,
         _borderColor = borderColor,
         _splashColor = splashColor,
         _highlightColor = highlightColor,
         _hoverColor = hoverColor,
-        _fontFamily = fontFamily;
+        _fontFamily = fontFamily,
+        _extensions = extensions;
 
   final ColorScheme _colors;
   final TextTheme? _textTheme;
@@ -26,6 +29,7 @@ class _ThemeBuilder {
   final Color? _highlightColor;
   final Color? _hoverColor;
   final String? _fontFamily;
+  final List<ThemeExtension<dynamic>>? _extensions;
 
   ThemeData toTheme() {
     return ThemeData(
@@ -52,6 +56,9 @@ class _ThemeBuilder {
       hoverColor: _hoverColor,
       // Used for dropdown buttons
       canvasColor: _popupMenuTheme.color,
+
+      // Extensions
+      extensions: _extensions,
     );
   }
 
@@ -185,6 +192,12 @@ ThemeData get lightTheme => _ThemeBuilder(
       splashColor: Colors.black26,
       highlightColor: Colors.black12,
       hoverColor: Colors.black12,
+      extensions: [
+        const HtmlTheme(
+          linkColor: Color(0xFF0969da),
+          codeColor: Color(0xFFf6f8fa),
+        ),
+      ],
     ).toTheme();
 
 ThemeData get darkTheme => _ThemeBuilder(
@@ -214,17 +227,20 @@ ThemeData get darkTheme => _ThemeBuilder(
       splashColor: Colors.black26,
       highlightColor: Colors.black12,
       hoverColor: Colors.black12,
+      extensions: [
+        const HtmlTheme(
+          linkColor: Color(0xFF539BF5),
+          codeColor: Color(0xFF373E47),
+        ),
+      ],
     ).toTheme();
 
-// TODO: use the new ThemeExtension once it is in stable
-extension ThemeExtension on ThemeData {
+extension CustomColors on ThemeData {
   Color get customListTileBackgroundColor => colorScheme.secondaryContainer;
   Color get customListTileForegroundColor => colorScheme.onSecondaryContainer;
 
   // For HTML tags
-  bool get _isInDarkMode => brightness == Brightness.dark;
-  Color get linkColor =>
-      _isInDarkMode ? const Color(0xFF539BF5) : const Color(0xFF0969da);
-  Color get codeColor =>
-      _isInDarkMode ? const Color(0xFF373E47) : const Color(0xFFf6f8fa);
+  HtmlTheme get htmlTheme => extension()!;
+  Color get linkColor => htmlTheme.linkColor;
+  Color get codeColor => htmlTheme.codeColor;
 }
