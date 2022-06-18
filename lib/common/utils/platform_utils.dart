@@ -8,3 +8,5 @@ const _desktopPlatforms = {
 
 bool get kIsDesktop =>
     !kIsWeb && _desktopPlatforms.contains(defaultTargetPlatform);
+
+bool get isMacOS => defaultTargetPlatform == TargetPlatform.macOS;
