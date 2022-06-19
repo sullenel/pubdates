@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pubdates/common/config/theme_extensions.dart';
 import 'package:pubdates/common/constants/colors.dart';
+import 'package:pubdates/common/constants/constants.dart';
 import 'package:pubdates/common/constants/dimensions.dart';
 
 class _ThemeBuilder {
@@ -184,7 +185,9 @@ ThemeData get lightTheme => _ThemeBuilder(
         error: Color(0xFFCF222E),
         onError: Colors.white,
       ),
+      fontFamily: AppConstants.fontFamily,
       textTheme: ThemeData.light().textTheme.apply(
+            fontFamily: AppConstants.fontFamily,
             bodyColor: const Color(0xFF24292F),
             displayColor: const Color(0xFF57606a),
           ),
@@ -219,7 +222,9 @@ ThemeData get darkTheme => _ThemeBuilder(
         error: Color(0xFFE5534B),
         onError: Color(0xFFCDD9E5),
       ),
+      fontFamily: AppConstants.fontFamily,
       textTheme: ThemeData.dark().textTheme.apply(
+            fontFamily: AppConstants.fontFamily,
             bodyColor: const Color(0xFFadbac7),
             displayColor: const Color(0xFF768390),
           ),

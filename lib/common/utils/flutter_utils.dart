@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 extension ColorExtension on Color {
   // Source: https://stackoverflow.com/q/55147586
@@ -31,4 +33,17 @@ extension WidgetExtension on Widget {
       builder: (_) => this,
     );
   }
+}
+
+void addLicense(String filePath, {String? packageName}) {
+  LicenseRegistry.addLicense(() async* {
+    final license = await rootBundle.loadString(filePath);
+
+    if (license.isNotEmpty) {
+      yield LicenseEntryWithLineBreaks(
+        [if (packageName != null) packageName],
+        license,
+      );
+    }
+  });
 }
