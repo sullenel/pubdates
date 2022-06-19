@@ -4,14 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pubdates/common/constants/dimensions.dart';
 import 'package:pubdates/common/constants/shortcuts.dart';
-import 'package:pubdates/common/utils/flutter_utils.dart';
-import 'package:pubdates/common/utils/path_utils.dart';
+import 'package:pubdates/features/home/widgets/app_scope.dart';
 import 'package:pubdates/features/home/widgets/home_header.dart';
 import 'package:pubdates/features/opened_projects/bloc/opened_projects_bloc.dart';
 import 'package:pubdates/features/opened_projects/models/opened_project_entry.dart';
 import 'package:pubdates/features/opened_projects/widgets/opened_projects_list.dart';
-import 'package:pubdates/features/project/project_page.dart';
-import 'package:pubdates/features/settings/widgets/settings_dialog.dart';
 
 extension on BuildContext {
   bool get hasOpenedProjects =>
@@ -28,16 +25,12 @@ class HomeBody extends StatefulWidget {
 }
 
 class _HomeBodyState extends State<HomeBody> {
-  void _handleSelectProject() async {
-    final path = await context.read<PathPicker>().selectDirectory();
-
-    if (path != null) {
-      _handleOpenProject(path);
-    }
+  void _handleSelectProject() {
+    AppScope.selectProject(context);
   }
 
   void _handleOpenProject(Directory path) {
-    Navigator.of(context).push(ProjectPage.route(path));
+    AppScope.openProject(context, path: path);
   }
 
   void _handleDeleteOpenedProject(OpenedProjectEntry project) {
@@ -46,7 +39,7 @@ class _HomeBodyState extends State<HomeBody> {
   }
 
   void _handleOpenSettings() {
-    const SettingsDialog().asDialog(context);
+    AppScope.openSettings(context);
   }
 
   @override

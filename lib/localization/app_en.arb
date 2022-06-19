@@ -90,7 +90,7 @@
       "sorting": {}
     }
   },
-  "settingsTitle": "Settings",
+  "settingsTitle": "Preferences",
   "sdkPathOption": "Dart/Flutter SDK path",
   "sdkPathOptionDescription": "In case the path cannot be automatically detected",
   "unsetAction": "Unset",
@@ -101,5 +101,10 @@
     "placeholders": {
       "mode": {}
     }
-  }
+  },
+
+  "menuBarFileSectionTitle": "File",
+  "menuBarOpenProjectAction": "Open...",
+  "menuBarOpenRecentAction": "Open Recent",
+  "menuBarPreferencesAction": "Preferences"
 }

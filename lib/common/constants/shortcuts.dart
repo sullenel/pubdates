@@ -1,10 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:pubdates/common/utils/platform_utils.dart';
 
-abstract class AppShortcuts {
-  // TODO: test on macOS
-  static const open = SingleActivator(LogicalKeyboardKey.keyO, control: true);
-  static const close = SingleActivator(LogicalKeyboardKey.keyW, control: true);
-  static const settings =
-      SingleActivator(LogicalKeyboardKey.comma, control: true);
+SingleActivator _controlActivator(LogicalKeyboardKey key) => SingleActivator(
+      key,
+      control: !isMacOS,
+      meta: isMacOS,
+    );
+
+mixin AppShortcuts {
+  static final open = _controlActivator(LogicalKeyboardKey.keyO);
+  static final close = _controlActivator(LogicalKeyboardKey.keyW);
+  static final settings = _controlActivator(LogicalKeyboardKey.comma);
 }
