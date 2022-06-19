@@ -4,8 +4,10 @@ class UrlOpener {
   const UrlOpener();
 
   Future<void> openUrl(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
+    final parsed = Uri.tryParse(url);
+
+    if (parsed != null && await canLaunchUrl(parsed)) {
+      await launchUrl(parsed);
     }
   }
 }
