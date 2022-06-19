@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 
 const _desktopPlatforms = {
@@ -9,4 +11,4 @@ const _desktopPlatforms = {
 bool get kIsDesktop =>
     !kIsWeb && _desktopPlatforms.contains(defaultTargetPlatform);
 
-bool get isMacOS => defaultTargetPlatform == TargetPlatform.macOS;
+bool get isMacOS => Platform.isMacOS;
