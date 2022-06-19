@@ -48,26 +48,30 @@ class ChangeLogSummary extends StatelessWidget {
       child: InkWell(
         onTap: onPressed,
         borderRadius: AppBorders.card,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            _ChangeLogHeader(
-              onOpenPressed: onOpenPressed,
-              package: changeLog.package,
-            ),
-            const Divider(height: 0),
-            if (changeLog.hasLogs) ...[
-              for (final log in _logs) ...[
-                _VersionChangeLog(
-                  onLinkPressed: onLinkPressed,
-                  log: log,
-                ),
-                const Divider(height: 0),
-              ],
-              if (_canShowAll) _ShowAllAction(onPressed: onPressed),
-            ] else
-              const _NoChangeLog(),
-          ],
+        // FIXME: card's background gets somehow lost here
+        child: Material(
+          color: context.theme.cardTheme.color,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _ChangeLogHeader(
+                onOpenPressed: onOpenPressed,
+                package: changeLog.package,
+              ),
+              const Divider(height: 0),
+              if (changeLog.hasLogs) ...[
+                for (final log in _logs) ...[
+                  _VersionChangeLog(
+                    onLinkPressed: onLinkPressed,
+                    log: log,
+                  ),
+                  const Divider(height: 0),
+                ],
+                if (_canShowAll) _ShowAllAction(onPressed: onPressed),
+              ] else
+                const _NoChangeLog(),
+            ],
+          ),
         ),
       ),
     );
@@ -99,7 +103,7 @@ class _ChangeLogHeader extends StatelessWidget {
               children: [
                 Text(
                   package.name,
-                  style: theme.textTheme.headlineSmall?.copyWith(
+                  style: theme.textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -136,7 +140,9 @@ class _PackageVersions extends StatelessWidget {
   Widget build(BuildContext context) {
     late final t = AppLocalizations.of(context);
     final theme = Theme.of(context);
-    final textStyle = theme.textTheme.bodyLarge;
+    final textStyle = theme.textTheme.bodyMedium?.copyWith(
+      color: theme.textTheme.bodySmall?.color,
+    );
     const separator = Text(' • ');
 
     return Row(
@@ -204,8 +210,7 @@ class _VersionChangeLog extends StatelessWidget {
             child: Text(
               log.version,
               textAlign: TextAlign.start,
-              style: theme.textTheme.titleMedium
-                  ?.copyWith(fontWeight: FontWeight.bold),
+              style: theme.textTheme.titleMedium,
             ),
           ),
           const HSpace(AppInsets.lg),
