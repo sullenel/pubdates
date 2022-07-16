@@ -1,23 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:pubdates/common/constants/dimensions.dart';
 import 'package:pubdates/common/constants/icons.dart';
-import 'package:pubdates/common/utils/flutter_utils.dart';
-import 'package:pubdates/features/settings/widgets/settings_dialog.dart';
+import 'package:pubdates/features/home/widgets/app_scope.dart';
 import 'package:pubdates/localization/app_localizations.dart';
 
-class HomeAppBar extends StatefulWidget implements PreferredSizeWidget {
-  const HomeAppBar({Key? key}) : super(key: key);
+class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const HomeAppBar({super.key});
 
   @override
-  State<HomeAppBar> createState() => _HomeAppBarState();
-
-  @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
-}
-
-class _HomeAppBarState extends State<HomeAppBar> {
-  void _handleOpenSettings() {
-    const SettingsDialog().asDialog(context);
-  }
+  Size get preferredSize => const Size.fromHeight(AppSizes.appBarHeight);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +17,7 @@ class _HomeAppBarState extends State<HomeAppBar> {
     return AppBar(
       actions: [
         IconButton(
-          onPressed: _handleOpenSettings,
+          onPressed: () => AppScope.openSettings(context),
           tooltip: t.settingsTitle,
           icon: const Icon(AppIcons.settings),
         ),
