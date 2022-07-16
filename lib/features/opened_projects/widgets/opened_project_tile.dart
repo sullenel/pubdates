@@ -11,11 +11,11 @@ import 'package:pubdates/features/opened_projects/widgets/project_icon.dart';
 
 class OpenedProjectTile extends StatelessWidget {
   const OpenedProjectTile({
-    Key? key,
+    super.key,
     required this.entry,
     this.onPressed,
     this.onDelete,
-  }) : super(key: key);
+  });
 
   final OpenedProjectEntry entry;
   final VoidCallback? onPressed;
@@ -30,6 +30,7 @@ class OpenedProjectTile extends StatelessWidget {
     return CustomListTile(
       onPressed: onPressed,
       leading: ProjectIcon(entry: entry),
+      padding: const EdgeInsets.all(AppInsets.lg),
       trailing: FlipOnHover(
         front: frontIcon,
         // NOTE: in case we need to (temporarily) disable the delete action
@@ -71,13 +72,15 @@ class _ProjectInfoSection extends StatelessWidget {
           title,
           style: textTheme.titleMedium?.copyWith(
             color: textColor,
+            height: 1,
             fontWeight: FontWeight.w500,
           ),
         ),
-        const VSpace(AppInsets.md),
+        const VSpace.small(),
         Text(
           subtitle,
           style: textTheme.bodyMedium?.copyWith(
+            height: 1,
             color: textColor.withOpacity(0.5),
           ),
         ),
