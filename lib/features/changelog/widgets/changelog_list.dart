@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:pubdates/common/constants/dimensions.dart';
+import 'package:pubdates/common/utils/flutter_utils.dart';
 import 'package:pubdates/common/utils/scroll_utils.dart';
 import 'package:pubdates/common/utils/typedefs.dart';
 import 'package:pubdates/common/utils/url_utils.dart';
@@ -11,7 +13,6 @@ import 'package:pubdates/features/changelog/models/package_changelog.dart';
 import 'package:pubdates/features/changelog/widgets/changelog_loading_progress.dart';
 import 'package:pubdates/features/changelog/widgets/changelog_summary.dart';
 import 'package:pubdates/features/project/models/package.dart';
-import 'package:scroll_to_index/scroll_to_index.dart';
 
 class ChangeLogList extends StatefulWidget {
   const ChangeLogList({Key? key}) : super(key: key);
@@ -25,7 +26,7 @@ class _ChangeLogListState extends State<ChangeLogList> {
     try {
       await context.read<UrlOpener>().openUrl(url);
     } on Exception {
-      // TODO: show snackbar
+      context.showErrorSnackBar(context.tr.errorUrlNotOpened(url));
     }
   }
 

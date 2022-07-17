@@ -54,6 +54,7 @@
   "noChangeLog": "Failed to parse changelog",
   "projectNoUpdates": "Everything is up to date",
   "closeAction": "Close",
+
   "errorPubNotFound": "Dart or Flutter binaries could not be found",
   "errorInvalidProject": "The provided directory is not a valid Dart project",
   "errorInvalidPubspec": "Failed to parse the file: {path}",
@@ -81,6 +82,15 @@
       }
     }
   },
+  "errorUrlNotOpened": "Failed to launch {url}",
+  "@errorUrlNotOpened": {
+    "placeholders": {
+      "url": {
+        "type": "String"
+      }
+    }
+  },
+
   "projectLogoTooltip": "Project logo",
   "recent": "Recent",
   "sortPackagesTooltip": "Sort packages",
