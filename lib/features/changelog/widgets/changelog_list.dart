@@ -6,6 +6,7 @@ import 'package:pubdates/common/utils/flutter_utils.dart';
 import 'package:pubdates/common/utils/scroll_utils.dart';
 import 'package:pubdates/common/utils/typedefs.dart';
 import 'package:pubdates/common/utils/url_utils.dart';
+import 'package:pubdates/common/widgets/limited_width.dart';
 import 'package:pubdates/common/widgets/loading_indicator.dart';
 import 'package:pubdates/features/changelog/bloc/changelog_bloc.dart';
 import 'package:pubdates/features/changelog/bloc/changelog_state.dart';
@@ -86,12 +87,15 @@ class _ChangeLogList extends StatelessWidget {
           key: ValueKey(index),
           index: index,
           controller: scrollController,
-          child: ChangeLogSummary(
-            changeLog: item,
-            onLinkPressed: onLinkPressed,
-            onOpenPressed: onLinkPressed == null
-                ? null
-                : () => onLinkPressed!(item.package.changeLogUrl.toString()),
+          child: LimitedWidth(
+            maxWidth: 1000,
+            child: ChangeLogSummary(
+              changeLog: item,
+              onLinkPressed: onLinkPressed,
+              onOpenPressed: onLinkPressed == null
+                  ? null
+                  : () => onLinkPressed!('${item.package.changeLogUrl}'),
+            ),
           ),
         );
       },
