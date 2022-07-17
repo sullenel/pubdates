@@ -106,5 +106,7 @@
   "menuBarFileSectionTitle": "File",
   "menuBarOpenProjectAction": "Open...",
   "menuBarOpenRecentAction": "Open Recent",
-  "menuBarPreferencesAction": "Preferences"
+  "menuBarPreferencesAction": "Preferences",
+
+  "loading": "LOADING"
 }
