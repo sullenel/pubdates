@@ -32,3 +32,50 @@ class HtmlTheme extends ThemeExtension<HtmlTheme> {
     );
   }
 }
+
+@immutable
+class CustomColors extends ThemeExtension<CustomColors> {
+  const CustomColors({
+    required this.success,
+    required this.onSuccess,
+    required this.info,
+    required this.onInfo,
+  });
+
+  final Color success;
+  final Color onSuccess;
+  final Color info;
+  final Color onInfo;
+
+  @override
+  ThemeExtension<CustomColors> copyWith({
+    Color? success,
+    Color? onSuccess,
+    Color? info,
+    Color? onInfo,
+  }) {
+    return CustomColors(
+      success: success ?? this.success,
+      onSuccess: onSuccess ?? this.onSuccess,
+      info: info ?? this.info,
+      onInfo: onInfo ?? this.onInfo,
+    );
+  }
+
+  @override
+  ThemeExtension<CustomColors> lerp(
+    ThemeExtension<CustomColors>? other,
+    double t,
+  ) {
+    if (other is! CustomColors) {
+      return this;
+    }
+
+    return CustomColors(
+      success: Color.lerp(success, other.success, t)!,
+      onSuccess: Color.lerp(onSuccess, other.onSuccess, t)!,
+      info: Color.lerp(info, other.info, t)!,
+      onInfo: Color.lerp(onInfo, other.onInfo, t)!,
+    );
+  }
+}

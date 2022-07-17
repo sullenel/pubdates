@@ -52,6 +52,7 @@ class _ThemeBuilder {
       popupMenuTheme: _popupMenuTheme,
       listTileTheme: _listTileTheme,
       tooltipTheme: _tooltipTheme,
+      snackBarTheme: _snackBarTheme,
 
       // Legacy stuff
       hoverColor: _hoverColor,
@@ -163,6 +164,12 @@ class _ThemeBuilder {
         headlineSmall: _textTheme?.headlineSmall?.copyWith(height: 1.2),
         bodyLarge: _textTheme?.bodyLarge?.copyWith(height: 1.8),
       );
+
+  SnackBarThemeData get _snackBarTheme => SnackBarThemeData(
+        backgroundColor: _colors.primary,
+        behavior: SnackBarBehavior.floating,
+        contentTextStyle: _textTheme?.bodyMedium,
+      );
 }
 
 // The colors are shamelessly stolen from Github themes.
@@ -195,10 +202,16 @@ ThemeData get lightTheme => _ThemeBuilder(
       splashColor: Colors.black26,
       highlightColor: Colors.black12,
       hoverColor: Colors.black12,
-      extensions: [
-        const HtmlTheme(
+      extensions: const [
+        HtmlTheme(
           linkColor: Color(0xFF0969da),
           codeColor: Color(0xFFf6f8fa),
+        ),
+        CustomColors(
+          success: Color(0xFF2C974B),
+          onSuccess: Colors.white,
+          info: Colors.amber,
+          onInfo: Colors.white,
         ),
       ],
     ).toTheme();
@@ -232,15 +245,21 @@ ThemeData get darkTheme => _ThemeBuilder(
       splashColor: Colors.black26,
       highlightColor: Colors.black12,
       hoverColor: Colors.black12,
-      extensions: [
-        const HtmlTheme(
+      extensions: const [
+        HtmlTheme(
           linkColor: Color(0xFF539BF5),
           codeColor: Color(0xFF373E47),
+        ),
+        CustomColors(
+          success: Color(0xFF2C974B),
+          onSuccess: Colors.white,
+          info: Colors.amber,
+          onInfo: Colors.white,
         ),
       ],
     ).toTheme();
 
-extension CustomColors on ThemeData {
+extension CustomColorExtension on ThemeData {
   Color get customListTileBackgroundColor => colorScheme.secondaryContainer;
   Color get customListTileForegroundColor => colorScheme.onSecondaryContainer;
 
