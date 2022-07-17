@@ -44,8 +44,9 @@ class OpenedProjectsList extends StatelessWidget {
             return Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(AppInsets.lg) -
-                      const EdgeInsets.only(bottom: AppInsets.lg),
+                  padding: const EdgeInsets.all(AppInsets.lg).copyWith(
+                    bottom: 0,
+                  ),
                   child: LimitedWidth(
                     maxWidth: maxWidth,
                     child: SectionTitle(
